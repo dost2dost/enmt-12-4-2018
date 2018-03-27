@@ -85,13 +85,15 @@ public class RptController extends Controller {
         ws_tv = wb_tv.getWorksheets().get(0);
         lstTV= ReadExcel.getLst_Tv(ws_tv,22);
         Ebean.saveAll(lstTV);
-        return ok(views.html.RecordSAved.render());
+      //  return ok(views.html.RecordSAved.render());
+          return ok("ok");
     }
 
     public Result index1() {
 
 
-        return ok(views.html.index.render());
+      //  return ok(views.html.index.render());
+        return ok("ok");
     }
 
 }
