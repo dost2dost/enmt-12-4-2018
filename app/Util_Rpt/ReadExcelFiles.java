@@ -71,7 +71,13 @@ public class ReadExcelFiles {
         return con;
     }
 
-    public String ReadHeaders(String FilePath,int SheetNo,int nRow) throws SQLException {
+    // Exampe of how to sue ParseExcelSheets method.
+
+    //String SAMPLE_XLSX_FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\Dashboard_Lat_Long_Total_Sectors01232018115639238.xlsx";
+    //   String result=obj.ReadHeaders(SAMPLE_XLSX_FILE_PATH,1,0); 1 is sheet no and 0 is a row number from which you can start
+    // reading the row.
+
+    public String ParseExcelSheets(String FilePath,int SheetNo,int nRow) throws SQLException {
         ReadExcelFiles obj=new ReadExcelFiles();
 
 
