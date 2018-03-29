@@ -2,7 +2,6 @@ package controllers;
 
 import Services.Vdate;
 import Util_Rpt.ReadExcel;
-import com.aspose.cells.FindOptions;
 import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
 import com.avaje.ebean.Ebean;
@@ -18,7 +17,9 @@ import play.mvc.Result;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Dost Muhammad on 3/13/2018.
@@ -38,6 +39,19 @@ public class RptController extends Controller {
 
 
 
+    public Result vdateStep4() {
+
+        TV obj=new TV();
+        List<TV> lstAllTurfVendor= TV.find.select(String.valueOf(TV.class)).setDistinct(true).findList();
+        //Set<TV> lstAllTurfVendor =TV.find.select("usid").setDistinct(true).findSet();
+        Iterator iter = lstAllTurfVendor.iterator();
+        while (iter.hasNext()) {
+            obj= (TV) iter.next();
+            int v= (int) obj.getUsid();
+            System.out.println(obj.getPacenumber()+"usid "+v);
+        }
+        return ok("succes  vdate 4"+lstAllTurfVendor.size());
+    }
     public Result vdateStep2() {
 
         //row.clear();
