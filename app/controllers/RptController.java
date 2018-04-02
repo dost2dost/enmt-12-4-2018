@@ -2,6 +2,7 @@ package controllers;
 
 import Services.Vdate;
 import Util_Rpt.ReadExcel;
+import Util_Rpt.ValidateTurfVendor;
 import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
 import com.avaje.ebean.Ebean;
@@ -9,17 +10,17 @@ import com.avaje.ebean.SqlRow;
 import com.avaje.ebean.SqlUpdate;
 import com.avaje.ebean.annotation.Formula;
 import entities.TV;
+import entities.TurfVendorEnmt;
 import entities.WaterFall_LteData;
+import models.FindMissingUseids;
 import models.FindUseid;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dost Muhammad on 3/13/2018.
@@ -40,17 +41,59 @@ public class RptController extends Controller {
 
 
     public Result vdateStep4() {
+        List<TurfVendorEnmt> lt=TurfVendorEnmt.find.all();
+    List<TurfVendorEnmt> lst=new ArrayList<>();
+    List<SqlRow> rows=new ArrayList<SqlRow>();
+    List<FindMissingUseids> lstmisinguseid=new ArrayList<>();
+        List<TurfVendorEnmt> lstTV=new ArrayList<>();
 
-        TV obj=new TV();
-        List<TV> lstAllTurfVendor= TV.find.select(String.valueOf(TV.class)).setDistinct(true).findList();
-        //Set<TV> lstAllTurfVendor =TV.find.select("usid").setDistinct(true).findSet();
-        Iterator iter = lstAllTurfVendor.iterator();
-        while (iter.hasNext()) {
-            obj= (TV) iter.next();
-            int v= (int) obj.getUsid();
-            System.out.println(obj.getPacenumber()+"usid "+v);
+    lst= ValidateTurfVendor.findTVDistinct();
+
+    for(TurfVendorEnmt tv:lst){
+        String x= tv.getUsid();
+        String sql="select \"Useid\",\"Rbs Identity\"\n" +
+                "\tFROM public.\"SiteMaster_UseID_W_LOSANGELES.csv\"\n" +
+                "\twhere \"USID\"='"+x+"'\n" +
+                "\tGroup by (\"Useid\",\"Rbs Identity\")\n" +
+                "\texcept \n" +
+                "\tSELECT  \"USEID\",\"RBSID\"\n" +
+                "\tFROM public.\"_LTE_Vendor_Validation___1000_ro\"\n" +
+                "\twhere \"USID\"='"+x+"'\n" +
+                "\tgroup by (\"USEID\",\"RBSID\")";
+
+        rows=Ebean.createSqlQuery(sql)
+                .findList();
+        lstmisinguseid.add(new FindMissingUseids(tv,rows));
+
+        TurfVendorEnmt tt=new TurfVendorEnmt();
+        for(FindMissingUseids useids:lstmisinguseid){
+            for(SqlRow sq:useids.getSqlrow()){
+                tt= useids.getTv();
+                tt.setUseid((String) sq.get("useid"));
+                tt.setRbsid((String) sq.get("Rbs Identity"));
+                lstTV.add(tt);
+            }
         }
-        return ok("succes  vdate 4"+lstAllTurfVendor.size());
+
+    }
+
+        int xx=0;
+    if(!lstTV.isEmpty()){
+         xx=Ebean.saveAll(lstTV);
+    }
+          if(xx>0) {
+              for (TurfVendorEnmt turf : lstTV) {
+                  String sqlpass = "UPDATE public.validation_steps_statuses\n" +
+                          "\tSET Step4vdate='Pass'\n" +
+                          "\tWHERE usid='" + turf.getUsid() + "'";
+                  int x = Vdate.updateStep(sqlpass);
+              }
+          }
+
+
+        return ok("succes  vdate  : "+lstTV.size());
+
+
     }
     public Result vdateStep2() {
 
