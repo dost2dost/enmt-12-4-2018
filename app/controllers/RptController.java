@@ -263,13 +263,11 @@ public class RptController extends Controller {
                 "\twhere rfds_id IS NOT NULL\n" +
                 "\tgroup by usid,rfds_id;";
 
-        return ok(views.html.RecordSAved.render());
+        return ok("ok");
     }
 
     public Result index1() {
-
-
-        return ok(views.html.index.render());
+        return ok("ok");
     }
 
 }
