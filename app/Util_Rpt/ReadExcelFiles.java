@@ -122,7 +122,7 @@ public class ReadExcelFiles {
                 SheetName=   workbook.getFileName();
                 File f = new File(SheetName);
 
-                SheetName=f.getName().replace("-","_").replace(".CSV","");;
+                SheetName=f.getName().replace("-","_").replace(".csv","");;
             }
 
             SheetName= " \""+SheetName+"\" ";
@@ -325,6 +325,8 @@ public class ReadExcelFiles {
             st.execute(qs);
 
         }
+
+
 
         return  true;
 

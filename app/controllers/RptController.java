@@ -2,6 +2,8 @@ package controllers;
 
 import Services.Vdate;
 import Util_Rpt.ReadExcel;
+import Util_Rpt.ReadExcelFiles;
+import Util_Rpt.ValidateTurfVendor;
 import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
 import com.avaje.ebean.Ebean;
@@ -10,12 +12,14 @@ import com.avaje.ebean.SqlUpdate;
 import com.avaje.ebean.annotation.Formula;
 import entities.TV;
 import entities.WaterFall_LteData;
+import models.ExcelSheets;
 import models.FindUseid;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -266,8 +270,75 @@ public class RptController extends Controller {
         return ok("ok");
     }
 
+
+    // initial Start Page Load
     public Result index1() {
-        return ok("ok");
+
+        ReadExcelFiles objexcel= new ReadExcelFiles();
+        ValidateTurfVendor vobj = new ValidateTurfVendor();
+        ExcelSheets obj  = new ExcelSheets();
+        ArrayList lstFiles = new ArrayList();
+        ArrayList lstSheets =new ArrayList();
+        ArrayList lstRowNo  = new ArrayList();
+
+
+
+        lstFiles.add("Dashboard_Lat_Long_Total_Sectors01232018115639238.xlsx");
+        lstFiles.add("WaterfALL-2018-01-26.xlsb");
+        lstFiles.add("ENMT 3 _Turf_Vendor_Tim Kurtz_1_16_18.xls");
+        lstFiles.add("SiteMaster_UseID_W-LOSANGELES.csv");
+
+        lstSheets.add(2);
+        lstSheets.add(4);
+        lstSheets.add(0);
+        lstSheets.add(0);
+
+        lstRowNo.add(0);
+        lstRowNo.add(0);
+        lstRowNo.add(21);
+        lstRowNo.add(0);
+
+        ArrayList<ExcelSheets> lst= new ArrayList<ExcelSheets>();
+
+        for (int i=0;i<  lstFiles.size();i++) {
+
+            obj = new ExcelSheets();
+            obj.setFilePath(lstFiles.get(i).toString());
+            obj.setRowNo((int)lstRowNo.get(i));
+            obj.setSheetNo((int)lstSheets.get(i));
+            lst.add(obj);
+
+        }
+
+
+
+
+
+
+
+     /*   try {
+
+        for (int i=0;i<  lstFiles.size();i++) {
+
+            String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\"+lstFiles.get(i)+"";
+
+
+           //   String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
+
+
+           }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        */
+        vobj.Step1();
+
+
+
+        return ok("Get Started");
+
+
+
     }
 
 }

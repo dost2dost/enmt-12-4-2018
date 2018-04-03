@@ -63,5 +63,64 @@ public class ValidateTurfVendor {
 
         return true;
     }
+
+
+    public boolean Step1()
+    {
+        ReadExcelFiles obj=new ReadExcelFiles();
+        Connection Conn=obj.Connections();
+
+
+        String sql="";
+
+
+        sql= " \n" +
+                "SELECT  lte.\"USEID\",lte.\"PACE Number\",lte.\"Submitters E-mail\",lte.\"Structure Type\",lte.\"FA Location\",\n" +
+                "lte.\"RBSID\",lte.\"USID\",lte.\"SITE_STATE\",lte.\"Vendor Provided LATITUDE in Decimals\",lte.\"Vendor Provided LONGITUDE in Decimals\",\n" +
+                "lte.\"Vendor Provided GPS Calble Length (Feet)\", lte.\"Vendor Provided GPS Cable Type\",lte.\"Vendor Provided RBS Cable Length (Feet)\",\n" +
+                "lte.\"Vendor Provided RBS Cable Type\",\n" +
+                "data.\"Spectrum Bucket\",data.\"RFDS ID\" \n" +
+                "\n" +
+                "\n" +
+                "FROM  \"_LTE_Vendor_Validation___1000_ro\" lte,\"_LTE_Data\" data\n" +
+                "where data.\"PACE_NUMBER\" = lte.\"PACE Number\" and data.\"USID\"=lte.\"USID\"\n";
+
+        try {
+            Statement statementTblCol= Conn.createStatement();
+            Statement statementUpdate = Conn.createStatement();
+
+            ResultSet rstbl= statementTblCol.executeQuery(sql);
+
+            while (rstbl.next()) {
+                String SpectrumBucket = rstbl.getString("Spectrum Bucket");
+                String RfdsId = rstbl.getString("RFDS ID");
+                String PaceNumber=rstbl.getString("PACE Number");
+                String UsId =rstbl.getString("USID");
+
+                System.out.println("   PACE Number :" + PaceNumber);
+
+
+                String updatesql="update _lte_data_temp  SET Status = 'Pass' \n" +
+                        "where  \"RFDS ID\"='"+RfdsId+"'  AND \"PACE_NUMBER\" = '"+PaceNumber+"'";
+
+
+
+                System.out.println("   updatesql  :" + updatesql);
+                int update=statementUpdate.executeUpdate(updatesql);
+
+
+
+            }
+            statementUpdate.close();
+            Conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        return  true;
+
+    }
 }
 
