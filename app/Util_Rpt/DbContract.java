@@ -11,5 +11,5 @@ public class DbContract {
 
     public static final String USERNAME = "postgres";
 
-    public static final String PASSWORD = "";
+    public static final String PASSWORD = "password,123";
 }

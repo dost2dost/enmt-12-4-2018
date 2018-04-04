@@ -14,11 +14,17 @@ import entities.TV;
 import entities.WaterFall_LteData;
 import models.ExcelSheets;
 import models.FindUseid;
+import models.WidgetData;
 import play.Logger;
+
+
+import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,6 +34,7 @@ import java.util.Set;
 /**
  * Created by Dost Muhammad on 3/13/2018.
  */
+@Singleton
 public class RptController extends Controller {
 
     private static int insCountTV=0;
@@ -40,8 +47,17 @@ public class RptController extends Controller {
 
     private List<SqlRow> rowuseid=null;
     private List<FindUseid> rowuseidAll=new ArrayList<FindUseid>();
+    private final Form<WidgetData> reportform;
 
+    @Inject
+    public RptController(FormFactory formFactory) {
 
+     {
+            //this.form = formFactory.form(WidgetData.class);
+            this.reportform = formFactory.form(WidgetData.class);
+
+        }
+    }
 
     public Result vdateStep4() {
 
@@ -272,11 +288,21 @@ public class RptController extends Controller {
 
 
     // initial Start Page Load
+    public Result indexfnal() {
+        String sql="SELECT \"PACE Number\" as paceno, \"Submitters E-mail\" as email, \"Structure Type\" as type, \"FA Location\" as location, \"RBSID\" as rbsid, \"USID\" as usid, \"SITE_STATE\" sitestate, \"USEID\" as useid, \"Vendor Provided LATITUDE in Decimals\" as latitude, \"Vendor Provided LONGITUDE in Decimals\" as longitude, \"Vendor Provided GPS Calble Length (Feet)\" as gpscablelenthfeet, \"Vendor Provided GPS Cable Type\" as gpscabletype, \"Vendor Provided RBS Cable Length (Feet)\" as rbscablelethfeet, \"Vendor Provided RBS Cable Type\" as rbscabletype, rowno\n" +
+                "\tFROM public.\"_LTE_Vendor_Validation___1000_ro\";";
+        String sqlheader="select column_name as cname from information_schema.columns where table_name = '_LTE_Vendor_Validation___1000_ro'";
+        List<SqlRow> lstsql=null;
+        List<SqlRow> lstheader=null;
+        lstsql=Vdate.findLst(sql);
+        lstheader=Vdate.findLst(sqlheader);
+        return ok(views.html.ViewFReport.render(lstsql,lstheader));
+    }
     public Result index1() {
 
         ReadExcelFiles objexcel= new ReadExcelFiles();
         ValidateTurfVendor vobj = new ValidateTurfVendor();
-        ExcelSheets obj  = new ExcelSheets();
+        ExcelSheets obj = new ExcelSheets();
         ArrayList lstFiles = new ArrayList();
         ArrayList lstSheets =new ArrayList();
         ArrayList lstRowNo  = new ArrayList();
@@ -297,7 +323,7 @@ public class RptController extends Controller {
 
         lstRowNo.add(0);
         lstRowNo.add(2);
-        lstRowNo.add(0);
+        lstRowNo.add(1);
         lstRowNo.add(21);
         lstRowNo.add(0);
 
@@ -319,11 +345,11 @@ public class RptController extends Controller {
 
 
 
-      /*  try {
+       try {
 
         for (int i=0;i<  lstFiles.size();i++) {
 
-            String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\"+lstFiles.get(i)+"";
+            String  FILE_PATH = "C:\\Users\\Dost Muhammad\\Desktop\\Conure Automation Process\\"+lstFiles.get(i)+"";
 
 
             String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
@@ -334,13 +360,23 @@ public class RptController extends Controller {
             e.printStackTrace();
         }
 
-*/
-
-        vobj.Step2();
 
 
 
-        return ok("Get Started");
+      //  vobj.Step2();
+
+        List<SqlRow> lstsql=new ArrayList<SqlRow>();
+
+
+        String sqlp="SELECT \"PACE Number\" as paceno, \"Submitters E-mail\" as email, \"Structure Type\" as type, \"FA Location\" as location, \"RBSID\" as rbsid, \"USID\" as usid, \"SITE_STATE\" sitestate, \"USEID\" as useid, \"Vendor Provided LATITUDE in Decimals\" as latitude, \"Vendor Provided LONGITUDE in Decimals\" as longitude, \"Vendor Provided GPS Calble Length (Feet)\" as gpscablelenthfeet, \"Vendor Provided GPS Cable Type\" as gpscabletype, \"Vendor Provided RBS Cable Length (Feet)\" as rbscablelethfeet, \"Vendor Provided RBS Cable Type\" as rbscabletype, rowno\n" +
+                "\tFROM public.\"_LTE_Vendor_Validation___1000_ro\";";
+        String sqlheader="select column_name as cname from information_schema.columns where table_name = '_LTE_Vendor_Validation___1000_ro'";
+        List<SqlRow> lstsqll=null;
+        List<SqlRow> lstheader=null;
+        lstsqll=Vdate.findLst(sqlp);
+        lstheader=Vdate.findLst(sqlheader);
+
+        return ok(views.html.ViewFReport.render(lstsqll,lstheader));
 
 
 
