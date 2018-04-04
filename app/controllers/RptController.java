@@ -284,16 +284,19 @@ public class RptController extends Controller {
 
 
         lstFiles.add("Dashboard_Lat_Long_Total_Sectors01232018115639238.xlsx");
+        lstFiles.add("LOS-ANGELES_L.A._20171128210550550_2017-LTE-Next-Carrier_LTE-5C_sm0587_BulkUpdate_Spreadsheet_Multi_11282017_SYSTEM_V0.1.xlsx");
         lstFiles.add("WaterfALL-2018-01-26.xlsb");
         lstFiles.add("ENMT 3 _Turf_Vendor_Tim Kurtz_1_16_18.xls");
         lstFiles.add("SiteMaster_UseID_W-LOSANGELES.csv");
 
         lstSheets.add(2);
+        lstSheets.add(8);
         lstSheets.add(4);
         lstSheets.add(0);
         lstSheets.add(0);
 
         lstRowNo.add(0);
+        lstRowNo.add(2);
         lstRowNo.add(0);
         lstRowNo.add(21);
         lstRowNo.add(0);
@@ -316,22 +319,24 @@ public class RptController extends Controller {
 
 
 
-     /*   try {
+      /*  try {
 
         for (int i=0;i<  lstFiles.size();i++) {
 
             String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\"+lstFiles.get(i)+"";
 
 
-           //   String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
+            String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
 
 
            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        */
-        vobj.Step1();
+
+*/
+
+        vobj.Step2();
 
 
 
