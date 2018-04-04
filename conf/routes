@@ -9,6 +9,11 @@ GET     /tv                         controllers.RptController.saveTurfVendor()
 GET     /exQ                        controllers.RptController.EXQ()
 GET     /vt2                        controllers.RptController.vdateStep2()
 GET     /vt4                        controllers.RptController.vdateStep4()
+GET     /gen_report                 controllers.RptController.genreport()
+GET     /gen_report2                 controllers.RptController.genreportboot()
+GET     /v                 controllers.RptController.v()
+GET     /vstep                 controllers.RptController.vdateStep_1()
+GET     /vstep2                 controllers.RptController.vdateStep_2()
 
 # Computers list (look at the default values for pagination parameters)
 #GET     /computers                  controllers.HomeController.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
@@ -25,5 +30,5 @@ GET     /vt4                        controllers.RptController.vdateStep4()
 #POST    /computers/:id/delete       controllers.HomeController.delete(id:Long)
 
 # Map static resources from the /public folder to the /assets URL path
-#GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
 

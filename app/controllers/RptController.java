@@ -11,12 +11,15 @@ import com.avaje.ebean.SqlUpdate;
 import com.avaje.ebean.annotation.Formula;
 import entities.TV;
 import entities.TurfVendorEnmt;
+import entities.TurfVendorEnmt_Tmplate;
 import entities.WaterFall_LteData;
 import models.FindMissingUseids;
 import models.FindUseid;
 import play.Logger;
+import play.api.libs.json.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.helper.FieldElements;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -40,6 +43,92 @@ public class RptController extends Controller {
 
 
 
+    public Result vdateStep_2() {
+        int x=0;int xx=0;
+        List<TurfVendorEnmt_Tmplate> lstturf=new ArrayList<TurfVendorEnmt_Tmplate>();
+        lstturf=TurfVendorEnmt_Tmplate.find.all();
+        for(TurfVendorEnmt_Tmplate tmp:lstturf){
+            String sql="update public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
+                    "\tset vdatestep_2='Pass'\n" +
+                    "\twhere \"USID\"=(\tselect a.\"USID\"\n" +
+                    "\tFROM public.\"CSSNG_TURF_Vendor_Upload_Template\" a\n" +
+                    "\tjoin public.\"_SOFT SECTOR ID (final)\" bn\n" +
+                    "\ton a.\"USID\" = bn.\"USID\"\n" +
+                    "\tand a.\"USID\"='"+tmp.getUsid()+"')";
+            System.out.print("x"+sql);
+             x = Vdate.updateStep(sql);
+            if(x==0){
+                sql="update public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
+                        "\tset vdatestep_2='Fail'\n" +
+                        "\twhere \"USID\"='"+tmp.getUsid()+"'";
+                xx = Vdate.updateStep(sql);
+                System.out.print("xx "+sql);
+
+            }
+
+        }
+
+        return ok("x"+x+"xx"+xx);
+    }
+    public Result vdateStep_1() {
+        List<SqlRow> lstusid=null;
+        String sql="update public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
+                "\tset vdatestep_1='Pass'\n" +
+                "\twhere \"USID\" in(select \"USID\"\n" +
+                "\tFROM public.\"_LTE_Vendor_Validation___1000_ro\"\n" +
+                "\twhere \"USID\" in (select \"USID\"\tFROM public._lte_data)\n" +
+                "\tand \"PACE Number\" in(select \"PACE_NUMBER\" \tFROM public._lte_data))";
+        int x = Vdate.updateStep(sql);
+        if(x>0){
+            sql="select \"USID\" as usid\n" +
+                    "\tFROM public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
+                    "\twhere vdatestep_1='Pass';";
+            lstusid=Ebean.createSqlQuery(sql)
+                    .findList();
+            System.out.println("sql "+sql);
+        }
+        if(!lstusid.isEmpty()) {
+            for (SqlRow row : lstusid) {
+
+                String sqlrfdsid = "update  public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
+                        "set \"RFDS ID\"=(select \"RFDS ID\"--,\"Spectrum Bucket\"\n" +
+                        "\tFROM public._lte_data\n" +
+                        "\twhere \"USID\"='" + row.get("USID").toString() + "')";
+                String sqlspectrumbucket = "update  public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
+                        "set \"Spectrum Bucket\"=(select \"Spectrum Bucket\"\n" +
+                        "\tFROM public._lte_data\n" +
+                        "\twhere \"USID\"='" + row.get("USID").toString() + "')";
+
+
+                SqlUpdate insert = Ebean.createSqlUpdate(sqlrfdsid);
+                insert.execute();
+                insert = Ebean.createSqlUpdate(sqlspectrumbucket);
+                insert.execute();
+
+            }
+        }
+        return ok(""+x);
+    }
+    public Result v() {
+
+        return ok();
+    }
+    public Result genreport() {
+        List<TurfVendorEnmt_Tmplate> lst=new ArrayList<>();
+
+        lst=TurfVendorEnmt_Tmplate.find.all();
+
+        return ok(views.html.viewtemplate.render(lst));
+    }
+    public Result genreportboot() {
+        List<TurfVendorEnmt_Tmplate> lst=new ArrayList<>();
+
+        lst=TurfVendorEnmt_Tmplate.find.all();
+
+        return ok(views.html.bootTest.render(lst));
+
+       // return ok(views.html.bootTest.render(Json.toJson(lst)));
+    }
     public Result vdateStep4() {
         List<TurfVendorEnmt> lt=TurfVendorEnmt.find.all();
     List<TurfVendorEnmt> lst=new ArrayList<>();
@@ -90,7 +179,9 @@ public class RptController extends Controller {
               }
           }
 
+          List<TurfVendorEnmt_Tmplate> lstTurfVendorTemplate=new ArrayList<TurfVendorEnmt_Tmplate>();
 
+        //lstTurfVendorTemplate.addAll(lstTV);
         return ok("succes  vdate  : "+lstTV.size());
 
 
@@ -107,7 +198,10 @@ public class RptController extends Controller {
                     " FROM public.\"_SOFT SECTOR ID (final)\"\n" +
                     " where  \"USID\" ='"+row.get("usid").toString()+"' \n" +
                     " and  \"RFDS ID\"='"+row.get("rfds_id").toString()+"'\n" +
-                    " and trim(\"USEID\")!='';";
+                    " and trim(\"USEID\")!=''" +
+                    ";";
+
+            System.out.println("the sql step1"+sql);
 
 //            String sql="SELECT \"USEID\" as useid\n" +
 //                    " FROM public.\"_SOFT SECTOR ID (final)\"\n" +
