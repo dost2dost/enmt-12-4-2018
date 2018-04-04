@@ -2,6 +2,7 @@ package controllers;
 
 import Services.Vdate;
 import Util_Rpt.ReadExcel;
+import Util_Rpt.ReadExcelFiles;
 import Util_Rpt.ValidateTurfVendor;
 import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
@@ -10,20 +11,19 @@ import com.avaje.ebean.SqlRow;
 import com.avaje.ebean.SqlUpdate;
 import com.avaje.ebean.annotation.Formula;
 import entities.TV;
-import entities.TurfVendorEnmt;
-import entities.TurfVendorEnmt_Tmplate;
 import entities.WaterFall_LteData;
-import models.FindMissingUseids;
+import models.ExcelSheets;
 import models.FindUseid;
 import play.Logger;
-import play.api.libs.json.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.helper.FieldElements;
 
 import javax.inject.Inject;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Dost Muhammad on 3/13/2018.
@@ -43,148 +43,18 @@ public class RptController extends Controller {
 
 
 
-    public Result vdateStep_2() {
-        int x=0;int xx=0;
-        List<TurfVendorEnmt_Tmplate> lstturf=new ArrayList<TurfVendorEnmt_Tmplate>();
-        lstturf=TurfVendorEnmt_Tmplate.find.all();
-        for(TurfVendorEnmt_Tmplate tmp:lstturf){
-            String sql="update public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
-                    "\tset vdatestep_2='Pass'\n" +
-                    "\twhere \"USID\"=(\tselect a.\"USID\"\n" +
-                    "\tFROM public.\"CSSNG_TURF_Vendor_Upload_Template\" a\n" +
-                    "\tjoin public.\"_SOFT SECTOR ID (final)\" bn\n" +
-                    "\ton a.\"USID\" = bn.\"USID\"\n" +
-                    "\tand a.\"USID\"='"+tmp.getUsid()+"')";
-            System.out.print("x"+sql);
-             x = Vdate.updateStep(sql);
-            if(x==0){
-                sql="update public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
-                        "\tset vdatestep_2='Fail'\n" +
-                        "\twhere \"USID\"='"+tmp.getUsid()+"'";
-                xx = Vdate.updateStep(sql);
-                System.out.print("xx "+sql);
-
-            }
-
-        }
-
-        return ok("x"+x+"xx"+xx);
-    }
-    public Result vdateStep_1() {
-        List<SqlRow> lstusid=null;
-        String sql="update public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
-                "\tset vdatestep_1='Pass'\n" +
-                "\twhere \"USID\" in(select \"USID\"\n" +
-                "\tFROM public.\"_LTE_Vendor_Validation___1000_ro\"\n" +
-                "\twhere \"USID\" in (select \"USID\"\tFROM public._lte_data)\n" +
-                "\tand \"PACE Number\" in(select \"PACE_NUMBER\" \tFROM public._lte_data))";
-        int x = Vdate.updateStep(sql);
-        if(x>0){
-            sql="select \"USID\" as usid\n" +
-                    "\tFROM public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
-                    "\twhere vdatestep_1='Pass';";
-            lstusid=Ebean.createSqlQuery(sql)
-                    .findList();
-            System.out.println("sql "+sql);
-        }
-        if(!lstusid.isEmpty()) {
-            for (SqlRow row : lstusid) {
-
-                String sqlrfdsid = "update  public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
-                        "set \"RFDS ID\"=(select \"RFDS ID\"--,\"Spectrum Bucket\"\n" +
-                        "\tFROM public._lte_data\n" +
-                        "\twhere \"USID\"='" + row.get("USID").toString() + "')";
-                String sqlspectrumbucket = "update  public.\"CSSNG_TURF_Vendor_Upload_Template\"\n" +
-                        "set \"Spectrum Bucket\"=(select \"Spectrum Bucket\"\n" +
-                        "\tFROM public._lte_data\n" +
-                        "\twhere \"USID\"='" + row.get("USID").toString() + "')";
-
-
-                SqlUpdate insert = Ebean.createSqlUpdate(sqlrfdsid);
-                insert.execute();
-                insert = Ebean.createSqlUpdate(sqlspectrumbucket);
-                insert.execute();
-
-            }
-        }
-        return ok(""+x);
-    }
-    public Result v() {
-
-        return ok();
-    }
-    public Result genreport() {
-        List<TurfVendorEnmt_Tmplate> lst=new ArrayList<>();
-
-        lst=TurfVendorEnmt_Tmplate.find.all();
-
-        return ok(views.html.viewtemplate.render(lst));
-    }
-    public Result genreportboot() {
-        List<TurfVendorEnmt_Tmplate> lst=new ArrayList<>();
-
-        lst=TurfVendorEnmt_Tmplate.find.all();
-
-        return ok(views.html.bootTest.render(lst));
-
-       // return ok(views.html.bootTest.render(Json.toJson(lst)));
-    }
     public Result vdateStep4() {
-        List<TurfVendorEnmt> lt=TurfVendorEnmt.find.all();
-    List<TurfVendorEnmt> lst=new ArrayList<>();
-    List<SqlRow> rows=new ArrayList<SqlRow>();
-    List<FindMissingUseids> lstmisinguseid=new ArrayList<>();
-        List<TurfVendorEnmt> lstTV=new ArrayList<>();
 
-    lst= ValidateTurfVendor.findTVDistinct();
-
-    for(TurfVendorEnmt tv:lst){
-        String x= tv.getUsid();
-        String sql="select \"Useid\",\"Rbs Identity\"\n" +
-                "\tFROM public.\"SiteMaster_UseID_W_LOSANGELES.csv\"\n" +
-                "\twhere \"USID\"='"+x+"'\n" +
-                "\tGroup by (\"Useid\",\"Rbs Identity\")\n" +
-                "\texcept \n" +
-                "\tSELECT  \"USEID\",\"RBSID\"\n" +
-                "\tFROM public.\"_LTE_Vendor_Validation___1000_ro\"\n" +
-                "\twhere \"USID\"='"+x+"'\n" +
-                "\tgroup by (\"USEID\",\"RBSID\")";
-
-        rows=Ebean.createSqlQuery(sql)
-                .findList();
-        lstmisinguseid.add(new FindMissingUseids(tv,rows));
-
-        TurfVendorEnmt tt=new TurfVendorEnmt();
-        for(FindMissingUseids useids:lstmisinguseid){
-            for(SqlRow sq:useids.getSqlrow()){
-                tt= useids.getTv();
-                tt.setUseid((String) sq.get("useid"));
-                tt.setRbsid((String) sq.get("Rbs Identity"));
-                lstTV.add(tt);
-            }
+        TV obj=new TV();
+        List<TV> lstAllTurfVendor= TV.find.select(String.valueOf(TV.class)).setDistinct(true).findList();
+        //Set<TV> lstAllTurfVendor =TV.find.select("usid").setDistinct(true).findSet();
+        Iterator iter = lstAllTurfVendor.iterator();
+        while (iter.hasNext()) {
+            obj= (TV) iter.next();
+            int v= (int) obj.getUsid();
+            System.out.println(obj.getPacenumber()+"usid "+v);
         }
-
-    }
-
-        int xx=0;
-    if(!lstTV.isEmpty()){
-         xx=Ebean.saveAll(lstTV);
-    }
-          if(xx>0) {
-              for (TurfVendorEnmt turf : lstTV) {
-                  String sqlpass = "UPDATE public.validation_steps_statuses\n" +
-                          "\tSET Step4vdate='Pass'\n" +
-                          "\tWHERE usid='" + turf.getUsid() + "'";
-                  int x = Vdate.updateStep(sqlpass);
-              }
-          }
-
-          List<TurfVendorEnmt_Tmplate> lstTurfVendorTemplate=new ArrayList<TurfVendorEnmt_Tmplate>();
-
-        //lstTurfVendorTemplate.addAll(lstTV);
-        return ok("succes  vdate  : "+lstTV.size());
-
-
+        return ok("succes  vdate 4"+lstAllTurfVendor.size());
     }
     public Result vdateStep2() {
 
@@ -198,10 +68,7 @@ public class RptController extends Controller {
                     " FROM public.\"_SOFT SECTOR ID (final)\"\n" +
                     " where  \"USID\" ='"+row.get("usid").toString()+"' \n" +
                     " and  \"RFDS ID\"='"+row.get("rfds_id").toString()+"'\n" +
-                    " and trim(\"USEID\")!=''" +
-                    ";";
-
-            System.out.println("the sql step1"+sql);
+                    " and trim(\"USEID\")!='';";
 
 //            String sql="SELECT \"USEID\" as useid\n" +
 //                    " FROM public.\"_SOFT SECTOR ID (final)\"\n" +
@@ -400,13 +267,78 @@ public class RptController extends Controller {
                 "\twhere rfds_id IS NOT NULL\n" +
                 "\tgroup by usid,rfds_id;";
 
-        return ok(views.html.RecordSAved.render());
+        return ok("ok");
     }
 
+
+    // initial Start Page Load
     public Result index1() {
 
+        ReadExcelFiles objexcel= new ReadExcelFiles();
+        ValidateTurfVendor vobj = new ValidateTurfVendor();
+        ExcelSheets obj  = new ExcelSheets();
+        ArrayList lstFiles = new ArrayList();
+        ArrayList lstSheets =new ArrayList();
+        ArrayList lstRowNo  = new ArrayList();
 
-        return ok(views.html.index.render());
+
+
+        lstFiles.add("Dashboard_Lat_Long_Total_Sectors01232018115639238.xlsx");
+        lstFiles.add("WaterfALL-2018-01-26.xlsb");
+        lstFiles.add("ENMT 3 _Turf_Vendor_Tim Kurtz_1_16_18.xls");
+        lstFiles.add("SiteMaster_UseID_W-LOSANGELES.csv");
+
+        lstSheets.add(2);
+        lstSheets.add(4);
+        lstSheets.add(0);
+        lstSheets.add(0);
+
+        lstRowNo.add(0);
+        lstRowNo.add(0);
+        lstRowNo.add(21);
+        lstRowNo.add(0);
+
+        ArrayList<ExcelSheets> lst= new ArrayList<ExcelSheets>();
+
+        for (int i=0;i<  lstFiles.size();i++) {
+
+            obj = new ExcelSheets();
+            obj.setFilePath(lstFiles.get(i).toString());
+            obj.setRowNo((int)lstRowNo.get(i));
+            obj.setSheetNo((int)lstSheets.get(i));
+            lst.add(obj);
+
+        }
+
+
+
+
+
+
+
+     /*   try {
+
+        for (int i=0;i<  lstFiles.size();i++) {
+
+            String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\"+lstFiles.get(i)+"";
+
+
+           //   String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
+
+
+           }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        */
+        vobj.Step1();
+
+
+
+        return ok("Get Started");
+
+
+
     }
 
 }
