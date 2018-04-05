@@ -18,39 +18,46 @@
        <input type="button" name="btnsubmit" value="Generate Report">
    </div>
     <br/>
-    <table id="contacts" class="table table-striped">
-        <thead>
-            <tr class="table-hover ">
-            @for(index <- 0 until mylstheader.size-1) {
-                <th class="table-cell">@mylstheader.get(index).getString("cname")</th>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col" style="width: 650px">
+            <table id="contacts" class="table table-striped table-hover">
+                <thead>
+                    <tr class="table-hover ">
+                    @for(index <- 0 until mylstheader.size-1) {
+                        <th class="table-cell">@mylstheader.get(index).getString("cname")</th>
 
-            }
-            </tr>
-        </thead>
-        <tbody>
-        @for(index <- 0 until mylist.size) {
-            <tr>
+                    }
+                    </tr>
+                </thead>
+                <tbody>
+                @for(index <- 0 until mylist.size) {
+                    <tr>
 
-                <td class="table-cell">@mylist.get(index).get("paceno")</td>
-                <td class="table-cell">@mylist.get(index).get("email")</td>
-                <td class="table-cell">@mylist.get(index).get("type")</td>
-                <td class="table-cell">@mylist.get(index).get("location")</td>
-                <td class="table-cell">@mylist.get(index).get("rbsid")</td>
-                <td class="table-cell">@mylist.get(index).get("usid")</td>
-                <td class="table-cell">@mylist.get(index).get("sitestate")</td>
-                <td class="table-cell">@mylist.get(index).get("useid")</td>
-                <td class="table-cell">@mylist.get(index).get("latitude")</td>
-                <td class="table-cell">@mylist.get(index).get("longitude")</td>
-                <td class="table-cell">@mylist.get(index).get("gpscablelenthfeet")</td>
-                <td class="table-cell">@mylist.get(index).get("gpscabletype")</td>
-                <td class="table-cell">@mylist.get(index).get("rbscablelethfeet")</td>
-                <td class="table-cell">@mylist.get(index).get("rbscabletype")</td>
+                        <td class="table-cell">@mylist.get(index).get("paceno")</td>
+                        <td class="table-cell">@mylist.get(index).get("email")</td>
+                        <td class="table-cell">@mylist.get(index).get("type")</td>
+                        <td class="table-cell">@mylist.get(index).get("location")</td>
+                        <td class="table-cell">@mylist.get(index).get("rbsid")</td>
+                        <td class="table-cell">@mylist.get(index).get("usid")</td>
+                        <td class="table-cell">@mylist.get(index).get("sitestate")</td>
+                        <td class="table-cell">@mylist.get(index).get("useid")</td>
+                        <td class="table-cell">@mylist.get(index).get("latitude")</td>
+                        <td class="table-cell">@mylist.get(index).get("longitude")</td>
+                        <td class="table-cell">@mylist.get(index).get("gpscablelenthfeet")</td>
+                        <td class="table-cell">@mylist.get(index).get("gpscabletype")</td>
+                        <td class="table-cell">@mylist.get(index).get("rbscablelethfeet")</td>
+                        <td class="table-cell">@mylist.get(index).get("rbscabletype")</td>
 
-            </tr>
+                    </tr>
 
-        }
+                }
 
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col"></div>
+    </div>
 
 }
