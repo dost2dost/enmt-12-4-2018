@@ -5,6 +5,7 @@
 # Default path will just redirect to the computer list
 #GET     /                           controllers.HomeController.index()
 GET     /                         controllers.RptController.index1()
+POST     /submit                     controllers.RptController.save()
 #GET     /viewFreport                        controllers.RptController.indexfnal()
 #POST     /viewFreport                       controllers.RptController.indexfnal()
 GET     /tv                         controllers.RptController.saveTurfVendor()
