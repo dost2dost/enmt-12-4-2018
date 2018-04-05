@@ -1,0 +1,68 @@
+@import entities.TurfVendorEnmt_Tmplate
+@import helper.FieldConstructor
+
+@(mylist: List[TurfVendorEnmt_Tmplate])
+
+@main {
+
+<form>
+    <center>
+        <div class="container-fluid">
+            <table id="contacts" class="table table-striped">
+                <thead>
+                    <tr class="table-hover ">
+
+                        <th class="table-cell">Submitters E-mail</th>
+                        <th class="table-cell">PACE Number</th>
+                        <th class="table-cell">Structure Type</th>
+                        <th class="table-cell">FA Location</th>
+                        <th class="table-cell">RBSID</th>
+
+                        <th class="table-cell">SITE_STATE</th>
+                        <th class="table-cell">USEID</th>
+                        <th class="table-cell">Vendor Provided LATITUDE in Decimals</th>
+                        <th class="table-cell">Vendor Provided LONGITUDE in Decimals</th>
+                        <th class="table-cell">Vendor Provided GPS Calble Length (Feet)</th>
+                        <th class="table-cell">Vendor Provided GPS Cable Type</th>
+                        <th class="table-cell">Vendor Provided RBS Cable Length (Feet)</th>
+                        <th class="table-cell">Vendor Provided RBS Cable Type</th>
+                        <th class="table-cell">USID</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                @for(index <- 0 until mylist.size) {
+
+                    <tr>
+
+                        <td class="table-cell">@mylist.get(index).getSubmitterse_mail</td>
+                        <td class="table-cell">@mylist.get(index).getPacenumber</td>
+                        <td class="table-cell">@mylist.get(index).getStructuretype</td>
+                        <td class="table-cell">@mylist.get(index).getFalocation</td>
+                        <td class="table-cell">@mylist.get(index).getRbsid</td>
+                        <td class="table-cell">@mylist.get(index).getUsid</td>
+                        <td class="table-cell">@mylist.get(index).getSite_state</td>
+                        <td class="table-cell">@mylist.get(index).getVendorprovidedlatitudeindecimals</td>
+                        <td class="table-cell">@mylist.get(index).getVendorprovidedlongitudeindecimals</td>
+                        <td class="table-cell">@mylist.get(index).getVendorprovidedgpscalblelength_feet</td>
+                        <td class="table-cell">@mylist.get(index).getVendorprovidedgpscabletype</td>
+                        <td class="table-cell">@mylist.get(index).getVendorprovidedrbscablelength_feet</td>
+                        <td class="table-cell">@mylist.get(index).getVendorprovidedrbscabletype</td>
+                    </tr>
+
+                }
+                </tbody>
+            </table>
+        </div>
+
+    </center>
+
+
+</form>
+
+
+
+
+}
+
+

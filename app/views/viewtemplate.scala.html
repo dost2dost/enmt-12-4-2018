@@ -1,0 +1,56 @@
+@import entities.TurfVendorEnmt_Tmplate
+@import helper._
+@(mylist: List[TurfVendorEnmt_Tmplate])
+
+<html>
+    <header>
+        <title>Enmt Report Automation</title>
+    </header>
+    <bod>
+
+
+        <div class="container">
+            <h2>Enmt Report Automation</h2>
+
+            <table  class="table table-cell tab-header-background">
+                <thead>
+                    <tr><th>Submitters E-mail</th><th>PACE Number</th><th>Structure Type</th><th>FA Location</th><th>RBSID</th><th>USID</th><th>SITE_STATE</th><th>Vendor Provided LATITUDE in Decimals</th><th>Vendor Provided LONGITUDE in Decimals</th><th>Vendor Provided GPS Calble Length (Feet)</th><th>Vendor Provided GPS Cable Type</th><th>Vendor Provided RBS Cable Length (Feet)</th><th>Vendor Provided RBS Cable Type</th></tr>
+
+                </thead>
+                <tbody>
+
+                    @for(index <- 0 until mylist.size) {
+
+                            <tr>
+
+                                <td class="table-cell">@mylist.get(index).getSubmitterse_mail</td>
+                                <td>@mylist.get(index).getPacenumber</td>
+                                <td>@mylist.get(index).getStructuretype</td>
+                                <td>@mylist.get(index).getFalocation</td>
+                                <td>@mylist.get(index).getRbsid</td>
+                                <td>@mylist.get(index).getUsid</td>
+                                <td>@mylist.get(index).getSite_state</td>
+                                <td>@mylist.get(index).getVendorprovidedlatitudeindecimals</td>
+                                <td>@mylist.get(index).getVendorprovidedlongitudeindecimals</td>
+                                <td>@mylist.get(index).getVendorprovidedgpscalblelength_feet</td>
+                                <td>@mylist.get(index).getVendorprovidedgpscabletype</td>
+                                <td>@mylist.get(index).getVendorprovidedrbscablelength_feet</td>
+                                <td>@mylist.get(index).getVendorprovidedrbscabletype</td>
+                            </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+        <table id="123" class="tab-header-area">
+            <thead>
+                        </thead>
+            <tbody class="tab-content">
+
+
+            </tbody>
+        </table>
+    </bod>
+</html>

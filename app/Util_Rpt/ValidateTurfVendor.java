@@ -1,10 +1,50 @@
 package Util_Rpt;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.RawSql;
+import com.avaje.ebean.RawSqlBuilder;
+import entities.TV;
+import entities.TurfVendorEnmt;
+
+import java.awt.print.Book;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Abbas Qamar on 3/27/2018.
  */
 public class ValidateTurfVendor {
+
+    public static List<TurfVendorEnmt> findTVDistinct() {
+        String sql = "SELECT \"PACE Number\" as paceno,  \"Structure Type\" as structuretype, \"FA Location\" as falocation, \"RBSID\" as rbsid, \"USID\" as usid, \"SITE_STATE\" as sitestate, \"USEID\" as useid, \"Vendor Provided LATITUDE in Decimals\" as vendorplatitudeindecimal, \"Vendor Provided LONGITUDE in Decimals\"  as vendorplongiitudeindecimal, \"Vendor Provided GPS Calble Length (Feet)\"  as gpscablelenthinfeet, \"Vendor Provided GPS Cable Type\"  as gpscabletype, \"Vendor Provided RBS Cable Length (Feet)\"  as rbscablelenthinfeet, \"Vendor Provided RBS Cable Type\" as  rbscabletype\n" +
+                "\tFROM public.\"_LTE_Vendor_Validation___1000_ro\"\n" +
+                "\twhere  \"rowno\" in (select min(\"rowno\") from \"_LTE_Vendor_Validation___1000_ro\" group by \"USID\")";
+
+        System.out.print("the sql is "+sql);
+        RawSql rawSql = RawSqlBuilder.parse(sql)
+                .columnMapping('"'+"PACE Number"+'"', "pacenumber")
+                .columnMapping('"'+"Structure Type"+'"', "structuretype")
+                .columnMapping('"'+"USEID"+'"', "useid")
+                .columnMapping('"'+"FA Location"+'"', "falocation")
+                .columnMapping('"'+"SITE_STATE"+'"', "site_state")
+                .columnMapping('"'+"USID"+'"', "usid")
+                .columnMapping('"'+"RBSID"+'"', "rbsid")
+                .columnMapping('"'+"Vendor Provided LONGITUDE in Decimals"+'"', "vendorprovidedlongitudeindecimals")
+                .columnMapping('"'+"Vendor Provided LATITUDE in Decimals"+'"', "vendorprovidedlatitudeindecimals")
+                .columnMapping('"'+"Vendor Provided GPS Calble Length (Feet)"+'"', "vendorprovidedgpscalblelength_feet")
+                .columnMapping('"'+"Vendor Provided GPS Cable Type"+'"', "vendorprovidedgpscabletype")
+                .columnMapping('"'+"Vendor Provided RBS Cable Length (Feet)"+'"', "vendorprovidedrbscablelength_feet")
+                .columnMapping('"'+"Vendor Provided RBS Cable Type"+'"', "vendorprovidedrbscabletype")
+
+
+                .create();
+
+        return Ebean.createQuery(TurfVendorEnmt.class)
+                .setRawSql(rawSql)
+
+                .findList();
+    }
     public boolean Step3()
     {
         ReadExcelFiles obj=new ReadExcelFiles();

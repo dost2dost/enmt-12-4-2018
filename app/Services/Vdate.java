@@ -1,7 +1,9 @@
 package Services;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlQuery;
 import com.avaje.ebean.SqlRow;
+import com.avaje.ebean.SqlUpdate;
 
 import java.util.List;
 
@@ -13,6 +15,25 @@ public class Vdate {
     private static String paceno;
     private static List<SqlRow> rows;
     private  List<SqlRow> lstvdatestep2;
+
+    public static List<SqlRow>  findLst(String sql){
+
+        List<SqlRow> lst=null;
+        lst=Ebean.createSqlQuery(sql).findList();
+
+
+       return lst;
+
+    }
+    public static  int updateStep(String sql){
+        int x=0;
+        String sqlfail = sql;
+        SqlUpdate insert = Ebean.createSqlUpdate(sqlfail);
+        x=insert.execute();
+
+        return x;
+
+    }
 
     public List<SqlRow>  vdateStep2(){
         //lstvdatestep2.clear();

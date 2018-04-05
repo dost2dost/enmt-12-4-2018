@@ -28,6 +28,9 @@ public class JTest extends Controller {
 
     public static void main(String args[]) throws SQLException {
 
+        String st="";
+
+
        RowSet rows = (RowSet) Ebean.createSqlQuery("SELECT id, pacenumber, submitters_email\n" +
                "\tFROM public.enmt3_truf_vendor_tim_kurtz;")
                 .findUnique();
