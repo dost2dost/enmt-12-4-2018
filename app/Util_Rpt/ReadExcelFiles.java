@@ -426,9 +426,31 @@ public class ReadExcelFiles {
         while (rs.next()) {
 
 
+
+
+
+
+
+
+
+
+
             obj = new FinalTemplate();
             obj.setPaceNumber(rs.getString("PACE Number"));
             obj.setSubmittersEmail(rs.getString("Submitters E-mail"));
+            obj.setSubmittersEmail(rs.getString("Structure Type"));
+            obj.setSubmittersEmail(rs.getString("FA Location"));
+            obj.setSubmittersEmail(rs.getString("RBSID"));
+            obj.setSubmittersEmail(rs.getString("USID"));
+            obj.setSubmittersEmail(rs.getString("SITE_STATE"));
+            obj.setSubmittersEmail(rs.getString("USEID"));
+            obj.setSubmittersEmail(rs.getString("Vendor Provided LATITUDE in Decimals"));
+            obj.setSubmittersEmail(rs.getString("Vendor Provided LONGITUDE in Decimals"));
+            obj.setSubmittersEmail(rs.getString("Vendor Provided GPS Calble Length (Feet)"));
+            obj.setSubmittersEmail(rs.getString("Vendor Provided GPS Cable Type"));
+            obj.setSubmittersEmail(rs.getString("Vendor Provided RBS Cable Length (Feet)"));
+            obj.setSubmittersEmail(rs.getString("Vendor Provided RBS Cable Type"));
+
             System.out.println("1");
 
             lstFinalTable.add(obj);
