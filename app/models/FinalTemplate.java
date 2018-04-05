@@ -19,6 +19,10 @@ public class FinalTemplate {
     private String Vpgct;
     private String Vprcl;
     private String Vprct;
+    private String Status;
+    private String Step;
+    private String Date;
+
 
 
     public FinalTemplate(){};
