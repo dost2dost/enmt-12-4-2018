@@ -1,5 +1,9 @@
 package models;
 
+import org.joda.time.DateTime;
+
+import java.sql.Date;
+
 /**
  * Created by Abbas Qamar on 4/5/2018.
  */
@@ -21,7 +25,7 @@ public class FinalTemplate {
     private String Vprct;
     private String Status;
     private String Step;
-    private String Date;
+    private java.sql.Date Date;
 
     public FinalTemplate() {
     }
@@ -154,11 +158,11 @@ public class FinalTemplate {
         Step = step;
     }
 
-    public String getDate() {
+    public java.sql.Date getDate() {
         return Date;
     }
 
-    public void setDate(String date) {
+    public void setDate(java.sql.Date date) {
         Date = date;
     }
 }

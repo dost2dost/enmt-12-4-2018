@@ -416,7 +416,7 @@ public class ReadExcelFiles {
         Connection Conn=Connections();
         String sql="";
         String updatesql="";
-       
+
 
         FinalTemplate obj;
 
@@ -458,7 +458,7 @@ public class ReadExcelFiles {
             obj.setVpgct(rs.getString("Vendor Provided GPS Cable Type"));
             obj.setVprcl(rs.getString("Vendor Provided RBS Cable Length (Feet)"));
             obj.setVprct(rs.getString("Vendor Provided RBS Cable Type"));
-            obj.setDate(rs.getString("date"));
+            obj.setDate(rs.getDate("Date"));
 
 
             System.out.println("1");
@@ -517,7 +517,7 @@ public class ReadExcelFiles {
             obj.setVpgct(rs.getString("Vendor Provided GPS Cable Type"));
             obj.setVprcl(rs.getString("Vendor Provided RBS Cable Length (Feet)"));
             obj.setVprct(rs.getString("Vendor Provided RBS Cable Type"));
-            obj.setDate(rs.getString("date"));
+            obj.setDate(rs.getDate("date"));
 
 
             lstFinalTable.add(obj);
