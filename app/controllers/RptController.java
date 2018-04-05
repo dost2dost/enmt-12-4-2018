@@ -345,7 +345,7 @@ public class RptController extends Controller {
 
 
 
-      /* try {
+       try {
 
         for (int i=0;i<  lstFiles.size();i++) {
 
@@ -359,7 +359,7 @@ public class RptController extends Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-*/
+
 
 
       //  vobj.Step2();
