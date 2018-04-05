@@ -9,6 +9,7 @@ GET     /tv                         controllers.RptController.saveTurfVendor()
 GET     /exQ                        controllers.RptController.EXQ()
 GET     /vt2                        controllers.RptController.vdateStep2()
 GET     /vt4                        controllers.RptController.vdateStep4()
+POST     /submit                     controllers.RptController.save()
 
 # Computers list (look at the default values for pagination parameters)
 #GET     /computers                  controllers.HomeController.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")

@@ -14,9 +14,12 @@ import entities.TV;
 import entities.WaterFall_LteData;
 import models.ExcelSheets;
 import models.FindUseid;
+
 import play.Logger;
+import play.api.mvc.Request;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.twirl.api.Content;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
@@ -24,7 +27,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
+import play.data.DynamicForm;
+import play.data.Form;
 /**
  * Created by Dost Muhammad on 3/13/2018.
  */
@@ -271,6 +275,18 @@ public class RptController extends Controller {
     }
 
 
+
+    public  Result save() {
+        // TODO
+
+      //  System.out.println("kattoo "   +startdate );
+        DynamicForm dynamicForm = Form.form().bindFromRequest();
+        Logger.info("Username is: " + dynamicForm.get("username"));
+        Logger.info("Password is: " + dynamicForm.get("password"));
+        return ok("ok, I recived POST data. That's all...");
+    }
+
+
     // initial Start Page Load
     public Result index1() {
 
@@ -319,7 +335,7 @@ public class RptController extends Controller {
 
 
 
-      /*  try {
+       /* try {
 
         for (int i=0;i<  lstFiles.size();i++) {
 
@@ -336,11 +352,13 @@ public class RptController extends Controller {
 
 */
 
-        vobj.Step2();
+     vobj.Step4();
 
 
 
-        return ok("Get Started");
+      return  ok(views.html.RecordSAved.render(lst));
+
+     //   return ok("Get Started");
 
 
 
