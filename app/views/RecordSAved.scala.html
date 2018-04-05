@@ -1,5 +1,5 @@
-@import models.ExcelSheets
-@(lst: List[models.ExcelSheets ])
+@import models.FinalTemplate
+@(lst: List[models.FinalTemplate ])
 <htm>
     <style type="text/css">
             .containerDiv {
@@ -24,14 +24,15 @@
             <col style="backgroundcolor:yellow">
         </colgroup>
         <tr>
-            <th>Filepath</th>
-            <th>SheetNo</th>
+            <th>Pace Number</th>
+            <th>Submitters-Email</th>
 
         </tr>
 
-        @for(user <- lst) {
-            <tr>  <th>@user.getFilePath</th>
-                <th>@user.getSheetNo</th>
+        @for(tbl <- lst) {
+            <tr>
+                <th>@tbl.getPaceNumber</th>
+                <th>@tbl.getSubmittersEmail</th>
             </tr>
         }
 
