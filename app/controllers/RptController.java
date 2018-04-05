@@ -282,14 +282,25 @@ public class RptController extends Controller {
 
 
 
-    public  Result save() {
+    public  Result save() throws SQLException {
         // TODO
+        ReadExcelFiles objexcel= new ReadExcelFiles();
 
       //  System.out.println("kattoo "   +startdate );
         DynamicForm dynamicForm = Form.form().bindFromRequest();
+
         Logger.info("Username is: " + dynamicForm.get("username"));
         Logger.info("Password is: " + dynamicForm.get("password"));
-        return ok("ok, I recived POST data. That's all...");
+        String startDate=dynamicForm.get("username");
+        String endDate=dynamicForm.get("password");
+
+
+        ArrayList<FinalTemplate> lstfinal= objexcel.GetDateFromFinalTemplateByDate(startDate,endDate);
+
+
+        return  ok(views.html.RecordSAved.render(lstfinal));
+
+
     }
 
 
@@ -341,13 +352,13 @@ public class RptController extends Controller {
 
 
 
-/*
 
-        try {
+
+     /*   try {
 
         for (int i=0;i<  lstFiles.size();i++) {
 
-            String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\Conure Automation Tool\\"+dtf.format(now)+"\\"+lstFiles.get(i)+"";
+            String  FILE_PATH = "C:\\Users\\Dost Muhammad\\Desktop\\"+dtf.format(now)+"\\"+lstFiles.get(i)+"";
             System.out.println("FILE_PATH "+FILE_PATH);
 
             String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
@@ -368,12 +379,12 @@ public class RptController extends Controller {
 
 
 
-        ArrayList<FinalTemplate> lstfinal= objexcel.GetDataFromFinalTemplate();
+         ArrayList<FinalTemplate> lstfinal= objexcel.GetDataFromFinalTemplate();
 
 
-        return  ok(views.html.RecordSAved.render(lstfinal));
+         return  ok(views.html.RecordSAved.render(lstfinal));
 
-      // return ok("Process Completed");
+     // return ok("Process Completed");
 
 
 

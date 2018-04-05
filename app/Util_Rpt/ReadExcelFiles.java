@@ -376,12 +376,14 @@ public class ReadExcelFiles {
 
         ResultSet rs =statement.executeQuery(sql);
 
-        if (rs.next()) {
+        System.out.println("ALTER TABLE"+sql);
 
-           tablename = rs.getString("table_name");
+        if (!rs.next()) {
 
-           if(tablename=="")
-           {
+            System.out.println("tablename TABLE"+tablename);
+           //tablename = rs.getString("table_name");
+
+
 
                insertsql="select * INTO _lte_data_temp  from \"_LTE_Vendor_Validation___1000_ro\"";
 
@@ -396,7 +398,8 @@ public class ReadExcelFiles {
                        " Add Column  Date  varchar(10)";
                statementAlterTbl.execute(sqlAlterTbl);
 
-           }
+
+
 
         }
 
@@ -468,6 +471,63 @@ public class ReadExcelFiles {
 
 
     }
+
+    public  ArrayList<FinalTemplate> GetDateFromFinalTemplateByDate(String startDate,String endDate) throws SQLException {
+
+        ArrayList<FinalTemplate> lstFinalTable= new ArrayList<FinalTemplate>();
+        Connection Conn=Connections();
+        String sql="";
+
+        FinalTemplate obj;
+
+
+        Statement statement  = Conn.createStatement();
+
+
+        sql ="select *\n" +
+                "FROM public.\"_lte_data_temp\"\n" +
+                "where date between '"+startDate+"' and '"+endDate+"'";
+
+        ResultSet rs =statement.executeQuery(sql);
+
+        while (rs.next()) {
+
+
+
+
+            obj = new FinalTemplate();
+            obj.setPaceNumber(rs.getString("PACE Number"));
+            obj.setSubmittersEmail(rs.getString("Submitters E-mail"));
+            obj.setStructureType(rs.getString("Structure Type"));
+            obj.setFaLocation(rs.getString("FA Location"));
+            obj.setRbsId(rs.getString("RBSID"));
+            obj.setUsId(rs.getString("USID"));
+            obj.setSiteState(rs.getString("SITE_STATE"));
+            obj.setUseId(rs.getString("USEID"));
+            obj.setVplatd(rs.getString("Vendor Provided LATITUDE in Decimals"));
+            obj.setVplongd(rs.getString("Vendor Provided LONGITUDE in Decimals"));
+            obj.setVpgcl(rs.getString("Vendor Provided GPS Calble Length (Feet)"));
+            obj.setVpgct(rs.getString("Vendor Provided GPS Cable Type"));
+            obj.setVprcl(rs.getString("Vendor Provided RBS Cable Length (Feet)"));
+            obj.setVprct(rs.getString("Vendor Provided RBS Cable Type"));
+
+
+            lstFinalTable.add(obj);
+
+
+
+        }
+        statement.close();
+        Conn.close();
+        System.out.println("lstFinalTable "+lstFinalTable.size());
+        return lstFinalTable;
+
+
+
+
+
+    }
+
 
 
 }

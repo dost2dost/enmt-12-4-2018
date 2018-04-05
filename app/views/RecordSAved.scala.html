@@ -30,6 +30,15 @@
         </style>
     </head>
     <body>
+        var sdate;
+        Start Date: <input type="text"  id="sdate" name="fname" value=sdate><br>
+        End Date: <input type="text" name="lname" value="Doe"><br>
+
+        <form action="@routes.RptController.save()" method="POST">
+            java name: <input name="username"> <br />
+            java surname: <input name="password"> <br />
+            <input type="submit" value="save">
+        </form>
 
         <table id="customers">
             <tr>
