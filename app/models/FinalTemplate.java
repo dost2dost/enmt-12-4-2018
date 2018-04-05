@@ -33,13 +33,13 @@ public class FinalTemplate {
     }
 
     public void setPaceNumber(String paceNumber) {
-        this.PaceNumber = PaceNumber;
+        this.PaceNumber = paceNumber;
     }
 
     public String getSubmittersEmail() {
         return SubmittersEmail;
     }
-    public void setSheetNo(String subittersEmail) {
+    public void setSubmittersEmail(String subittersEmail) {
         this.SubmittersEmail = subittersEmail;
     }
 

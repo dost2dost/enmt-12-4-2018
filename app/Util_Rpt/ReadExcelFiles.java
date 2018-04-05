@@ -4,6 +4,8 @@ import com.aspose.cells.Cell;
 import com.aspose.cells.Workbook;
 import com.aspose.cells.Worksheet;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import models.ExcelSheets;
+import models.FinalTemplate;
 import play.libs.Json;
 import play.mvc.Result;
 
@@ -402,6 +404,47 @@ public class ReadExcelFiles {
 
 
         return true;
+    }
+
+
+    public  ArrayList<FinalTemplate> GetDataFromFinalTemplate() throws SQLException {
+
+       ArrayList<FinalTemplate> lstFinalTable= new ArrayList<FinalTemplate>();
+        Connection Conn=Connections();
+        String sql="";
+
+        FinalTemplate obj;
+
+
+        Statement statement  = Conn.createStatement();
+
+
+        sql =" select * from _lte_data_temp";
+
+        ResultSet rs =statement.executeQuery(sql);
+
+        while (rs.next()) {
+
+
+            obj = new FinalTemplate();
+            obj.setPaceNumber(rs.getString("PACE Number"));
+            obj.setSubmittersEmail(rs.getString("Submitters E-mail"));
+            System.out.println("1");
+
+            lstFinalTable.add(obj);
+
+
+
+        }
+        statement.close();
+        Conn.close();
+        System.out.println("lstFinalTable "+lstFinalTable.size());
+        return lstFinalTable;
+
+
+
+
+
     }
 
 

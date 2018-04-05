@@ -13,6 +13,7 @@ import com.avaje.ebean.annotation.Formula;
 import entities.TV;
 import entities.WaterFall_LteData;
 import models.ExcelSheets;
+import models.FinalTemplate;
 import models.FindUseid;
 
 import play.Logger;
@@ -292,7 +293,7 @@ public class RptController extends Controller {
 
 
     // initial Start Page Load
-    public Result index1() {
+    public Result index1() throws SQLException {
 
         ReadExcelFiles objexcel= new ReadExcelFiles();
         ValidateTurfVendor vobj = new ValidateTurfVendor();
@@ -334,12 +335,12 @@ public class RptController extends Controller {
         }
 
 
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMddyyyy");
         LocalDateTime now = LocalDateTime.now();
 
 
 
-
+/*
 
         try {
 
@@ -358,15 +359,17 @@ public class RptController extends Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+*/
 
 
 
   //   vobj.Step4();
 
 
+        ArrayList<FinalTemplate> lstfinal= objexcel.GetDataFromFinalTemplate();
 
-     return  ok(views.html.RecordSAved.render(lst));
+
+        return  ok(views.html.RecordSAved.render(lstfinal));
 
       // return ok("Process Completed");
 
