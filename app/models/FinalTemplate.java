@@ -27,10 +27,7 @@ public class FinalTemplate {
 
 
     public FinalTemplate(){};
-
-    public void setSubmittersEmail(String submittersEmail) {
-        SubmittersEmail = submittersEmail;
-    }
+ 
 
     public String getUseId() {
         return UseId;
