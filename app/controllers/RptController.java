@@ -366,9 +366,9 @@ public class RptController extends Controller {
 
 
 
-    //  return  ok(views.html.ShowData.render(lst));
+      //return  ok(views.html.RecordSAved.render(lst));
 
-        return ok("Process Completed");
+       return ok("Process Completed");
 
 
 
