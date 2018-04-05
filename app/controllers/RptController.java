@@ -350,7 +350,7 @@ public class RptController extends Controller {
 
             String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
 
-        //result   
+        //result
            }
 
             Boolean isCreated= objexcel.CreateTemplateTable();
@@ -366,9 +366,9 @@ public class RptController extends Controller {
 
 
 
-      return  ok(views.html.RecordSAved.render(lst));
+    //  return  ok(views.html.ShowData.render(lst));
 
-     //   return ok("Get Started");
+        return ok("Process Completed");
 
 
 
