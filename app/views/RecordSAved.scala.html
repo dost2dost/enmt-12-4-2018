@@ -1,47 +1,51 @@
+
 @import models.FinalTemplate
 @(lstfinal: List[models.FinalTemplate ])
-<htm>
-    <style type="text/css">
-            .containerDiv {
-                borderleft: 1px solid black;
-                borderbottom: 1px solid black;
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+                #customers {
+                    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+                    border-collapse: collapse;
+                    width: 100%;
+                }
 
-            }
-            .rowDiv {
-                bordertop: 1px solid black;
-            }
-            .cellDiv {
-                borderright: 1px solid black;
+                #customers td, #customers th {
+                    border: 1px solid #ddd;
+                    padding: 8px;
+                }
 
+                #customers tr:nth-child(even){background-color: #f2f2f2;}
 
-                padding: 4px;
-            }
-    </style>
+                #customers tr:hover {background-color: #ddd;}
 
-    <table>
+                #customers th {
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    text-align: left;
+                    background-color: #4CAF50;
+                    color: white;
+                }
+        </style>
+    </head>
+    <body>
 
-        <tr>
-            <th>Pace Number</th>
-            <th>Submitters Email</th>
+        <table id="customers">
+            <tr>
+                <th>PACE Number</th>
+                <th>Submitter Emails</th>
 
-        </tr>
-
-        @for(lst <- lstfinal) {
-            <tr>  <th>@lst.getPaceNumber</th>
-                <th>@lst.getSubmittersEmail</th>
             </tr>
-        }
 
 
+            @for(lst <- lstfinal) {
+                <tr>  <th>@lst.getPaceNumber</th>
+                    <th>@lst.getSubmittersEmail</th>
+                </tr>
+            }
 
-    </table>
-    var sdate;
-    Start Date: <input type="text"  id="sdate" name="fname" value=sdate><br>
-    End Date: <input type="text" name="lname" value="Doe"><br>
+        </table>
 
-    <form action="@routes.RptController.save()" method="POST">
-        java name: <input name="username"> <br />
-        java surname: <input name="password"> <br />
-        <input type="submit" value="save">
-    </form>
-</htm>
+    </body>
+</html>
