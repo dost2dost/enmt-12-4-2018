@@ -23,11 +23,64 @@ public class FinalTemplate {
     private String Step;
     private String Date;
 
+    public FinalTemplate() {
+    }
 
+    public String getPaceNumber() {
+        return PaceNumber;
+    }
 
+    public void setPaceNumber(String paceNumber) {
+        PaceNumber = paceNumber;
+    }
 
-    public FinalTemplate(){};
- 
+    public String getSubmittersEmail() {
+        return SubmittersEmail;
+    }
+
+    public void setSubmittersEmail(String submittersEmail) {
+        SubmittersEmail = submittersEmail;
+    }
+
+    public String getStructureType() {
+        return StructureType;
+    }
+
+    public void setStructureType(String structureType) {
+        StructureType = structureType;
+    }
+
+    public String getFaLocation() {
+        return FaLocation;
+    }
+
+    public void setFaLocation(String faLocation) {
+        FaLocation = faLocation;
+    }
+
+    public String getRbsId() {
+        return RbsId;
+    }
+
+    public void setRbsId(String rbsId) {
+        RbsId = rbsId;
+    }
+
+    public String getUsId() {
+        return UsId;
+    }
+
+    public void setUsId(String usId) {
+        UsId = usId;
+    }
+
+    public String getSiteState() {
+        return SiteState;
+    }
+
+    public void setSiteState(String siteState) {
+        SiteState = siteState;
+    }
 
     public String getUseId() {
         return UseId;
@@ -85,48 +138,27 @@ public class FinalTemplate {
         Vprct = vprct;
     }
 
-    public String getPaceNumber() {
-        return PaceNumber;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setPaceNumber(String paceNumber) {
-        this.PaceNumber = paceNumber;
+    public void setStatus(String status) {
+        Status = status;
     }
 
-    public String getSubmittersEmail() {
-        return SubmittersEmail;
-    }
-    public void setSubmittersEmail(String subittersEmail) {
-        this.SubmittersEmail = subittersEmail;
+    public String getStep() {
+        return Step;
     }
 
-    public String getStructureType() { return StructureType;}
-    public void setStructureType(String structureType)
-    {
-        this.StructureType= structureType;
+    public void setStep(String step) {
+        Step = step;
     }
 
-    public String getFaLocation() { return FaLocation;}
-    public void setFaLocation(String faLocation)
-    {
-        this.FaLocation= faLocation;
+    public String getDate() {
+        return Date;
     }
 
-    public String getRbsId() { return RbsId;}
-    public void setRbsId(String rbsId)
-    {
-        this.FaLocation= rbsId;
-    }
-
-    public String getUsId() { return UsId;}
-    public void setUsId(String usId)
-    {
-        this.FaLocation= usId;
-    }
-
-    public String getSiteState() { return SiteState;}
-    public void setSiteState(String siteState)
-    {
-        this.SiteState= siteState;
+    public void setDate(String date) {
+        Date = date;
     }
 }

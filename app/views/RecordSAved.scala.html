@@ -1,7 +1,9 @@
 
 @import models.FinalTemplate
 @(lstfinal: List[models.FinalTemplate ])
-<!DOCTYPE html>
+
+@main{
+
 <html>
     <head>
         <style>
@@ -30,39 +32,61 @@
         </style>
     </head>
     <body>
-        var sdate;
-        Start Date: <input type="text"  id="sdate" name="fname" value=sdate><br>
-        End Date: <input type="text" name="lname" value="Doe"><br>
 
-        <form action="@routes.RptController.save()" method="POST">
-            java name: <input name="username"> <br />
-            java surname: <input name="password"> <br />
-            <input type="submit" value="save">
-        </form>
+
+            <form action="@routes.RptController.save()" method="POST">
+                <div>
+                    Start Date: <input name="username">
+                    End Date: <input name="password"> <input type="submit" value="Submit">
+
+                </div>
+
+            </form>
+
+
 
         <table id="customers">
             <tr>
                 <th>PACE Number</th>
                 <th>Submitter Emails</th>
+                <th>Structure Type</th>
+                <th>FA Location</th>
+                <th>RBSID</th>
+                <th>USID</th>
+                <th>SITE_STATE</th>
+                <th>USEID</th>
+                <th>Vendor Provided LATITUDE in Decimals</th>
+                <th>Vendor Provided LONGITUDE in Decimals</th>
+                <th>Vendor Provided GPS Calble Length (Feet)</th>
+                <th>Vendor Provided GPS Cable Type</th>
+                <th>Vendor Provided RBS Cable Length (Feet)</th>
+                <th>Vendor Provided RBS Cable Type</th>
+                <th>Date</th>
+
+
+
 
             </tr>
 
 
             @for(lst <- lstfinal) {
-                <tr>  <th>@lst.getPaceNumber</th>
-                    <th>@lst.getSubmittersEmail</th>
-                    <th>@lst.getStructureType</th>
-                    <th>@lst.getFaLocation</th>
-                    <th>@lst.getRbsId</th>
-                    <th>@lst.getUsId</th>
-                    <th>@lst.getSiteState</th>
-                    <th>@lst.getUseId</th>
-                    <th>@lst.getVplatd</th>
-                    <th>@lst.getVplongd</th>
-                    <th>@lst.getVpgcl</th>
-                    <th>@lst.getVpgct</th>
-                    <th>@lst.getVprcl</th>
-                    <th>@lst.getVprct</th>
+                <tr>  <td>@lst.getPaceNumber</td>
+                    <td>@lst.getSubmittersEmail</td>
+                    <td>@lst.getStructureType</td>
+                    <td>@lst.getFaLocation</td>
+                    <td>@lst.getRbsId</td>
+                    <td>@lst.getUsId</td>
+                    <td>@lst.getSiteState</td>
+                    <td>@lst.getUseId</td>
+
+                    <td>@lst.getVplatd</td>
+                    <td>@lst.getVplongd</td>
+                    <td>@lst.getVpgcl</td>
+                    <td>@lst.getVpgct</td>
+                    
+                    <td>@lst.getVprcl</td>
+                    <td>@lst.getVprct</td>
+                    <td>@lst.getDate</td>
                 </tr>
             }
 
@@ -70,3 +94,4 @@
 
     </body>
 </html>
+}

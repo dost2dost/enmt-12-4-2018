@@ -437,22 +437,23 @@ public class ReadExcelFiles {
 
 
 
-
             obj = new FinalTemplate();
             obj.setPaceNumber(rs.getString("PACE Number"));
             obj.setSubmittersEmail(rs.getString("Submitters E-mail"));
-            obj.setSubmittersEmail(rs.getString("Structure Type"));
-            obj.setSubmittersEmail(rs.getString("FA Location"));
-            obj.setSubmittersEmail(rs.getString("RBSID"));
-            obj.setSubmittersEmail(rs.getString("USID"));
-            obj.setSubmittersEmail(rs.getString("SITE_STATE"));
-            obj.setSubmittersEmail(rs.getString("USEID"));
-            obj.setSubmittersEmail(rs.getString("Vendor Provided LATITUDE in Decimals"));
-            obj.setSubmittersEmail(rs.getString("Vendor Provided LONGITUDE in Decimals"));
-            obj.setSubmittersEmail(rs.getString("Vendor Provided GPS Calble Length (Feet)"));
-            obj.setSubmittersEmail(rs.getString("Vendor Provided GPS Cable Type"));
-            obj.setSubmittersEmail(rs.getString("Vendor Provided RBS Cable Length (Feet)"));
-            obj.setSubmittersEmail(rs.getString("Vendor Provided RBS Cable Type"));
+            obj.setStructureType(rs.getString("Structure Type"));
+            obj.setFaLocation(rs.getString("FA Location"));
+            obj.setRbsId(rs.getString("RBSID"));
+            obj.setUsId(rs.getString("USID"));
+            obj.setSiteState(rs.getString("SITE_STATE"));
+            obj.setUseId(rs.getString("USEID"));
+            obj.setVplatd(rs.getString("Vendor Provided LATITUDE in Decimals"));
+            obj.setVplongd(rs.getString("Vendor Provided LONGITUDE in Decimals"));
+            obj.setVpgcl(rs.getString("Vendor Provided GPS Calble Length (Feet)"));
+            obj.setVpgct(rs.getString("Vendor Provided GPS Cable Type"));
+            obj.setVprcl(rs.getString("Vendor Provided RBS Cable Length (Feet)"));
+            obj.setVprct(rs.getString("Vendor Provided RBS Cable Type"));
+            obj.setDate(rs.getString("date"));
+
 
             System.out.println("1");
 
@@ -510,6 +511,7 @@ public class ReadExcelFiles {
             obj.setVpgct(rs.getString("Vendor Provided GPS Cable Type"));
             obj.setVprcl(rs.getString("Vendor Provided RBS Cable Length (Feet)"));
             obj.setVprct(rs.getString("Vendor Provided RBS Cable Type"));
+            obj.setDate(rs.getString("date"));
 
 
             lstFinalTable.add(obj);

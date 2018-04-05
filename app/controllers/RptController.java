@@ -293,9 +293,13 @@ public class RptController extends Controller {
         Logger.info("Password is: " + dynamicForm.get("password"));
         String startDate=dynamicForm.get("username");
         String endDate=dynamicForm.get("password");
+        ArrayList<FinalTemplate> lstfinal=new ArrayList<FinalTemplate>();
+        if(startDate.equalsIgnoreCase("") && endDate.equalsIgnoreCase("")){
+            lstfinal= objexcel.GetDataFromFinalTemplate();
+        }else{
+             lstfinal= objexcel.GetDateFromFinalTemplateByDate(startDate,endDate);
+        }
 
-
-        ArrayList<FinalTemplate> lstfinal= objexcel.GetDateFromFinalTemplateByDate(startDate,endDate);
 
 
         return  ok(views.html.RecordSAved.render(lstfinal));
