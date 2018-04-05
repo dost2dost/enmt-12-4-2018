@@ -21,8 +21,68 @@ public class FinalTemplate {
     private String Vprct;
 
 
+
     public FinalTemplate(){};
 
+    public void setSubmittersEmail(String submittersEmail) {
+        SubmittersEmail = submittersEmail;
+    }
+
+    public String getUseId() {
+        return UseId;
+    }
+
+    public void setUseId(String useId) {
+        UseId = useId;
+    }
+
+    public String getVplatd() {
+        return Vplatd;
+    }
+
+    public void setVplatd(String vplatd) {
+        Vplatd = vplatd;
+    }
+
+    public String getVplongd() {
+        return Vplongd;
+    }
+
+    public void setVplongd(String vplongd) {
+        Vplongd = vplongd;
+    }
+
+    public String getVpgcl() {
+        return Vpgcl;
+    }
+
+    public void setVpgcl(String vpgcl) {
+        Vpgcl = vpgcl;
+    }
+
+    public String getVpgct() {
+        return Vpgct;
+    }
+
+    public void setVpgct(String vpgct) {
+        Vpgct = vpgct;
+    }
+
+    public String getVprcl() {
+        return Vprcl;
+    }
+
+    public void setVprcl(String vprcl) {
+        Vprcl = vprcl;
+    }
+
+    public String getVprct() {
+        return Vprct;
+    }
+
+    public void setVprct(String vprct) {
+        Vprct = vprct;
+    }
 
     public String getPaceNumber() {
         return PaceNumber;
