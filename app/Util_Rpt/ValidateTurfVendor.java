@@ -333,7 +333,7 @@ public class ValidateTurfVendor {
                         sql="select  \"USID\",\"USEID\" from \"_lte_data_temp\"\n" +
                                 "where \"USID\"='"+Usidm+"' and \"USEID\"='"+UseIdm+"'";
 
-                        System.out.println("sql step 4 :" + sql);
+                      //  System.out.println("sql step 4 :" + sql);
 
                         ResultSet rslte =statementLte.executeQuery(sql);
                     sql="";
@@ -343,11 +343,11 @@ public class ValidateTurfVendor {
                                 "insert into \"_lte_data_temp\" (\"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
                                 " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
                                 " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
-                                "  \"Vendor Provided RBS Cable Type\")\n" +
+                                "  \"Vendor Provided RBS Cable Type\",\"Step\",\"Status\")\n" +
                                 "  \n" +
                                 "  values ('"+pacenumber+"','"+submitemail+"','"+structtype+"','"+falocation+"'" +
                                 " ,'"+rbsid+"','"+Usid+"','"+sitestate+"','"+UseIdm+"','"+vplatd+"','"+vplongd+"'" +
-                                "  ,'"+vpgcl+"','"+vpgct+"','"+vprcl+"','"+vprct+"')";
+                                "  ,'"+vpgcl+"','"+vpgct+"','"+vprcl+"','"+vprct+"','Step 4','Fail')";
 
                             int insertcount =statementInsert.executeUpdate(insertsql);
                             System.out.println("insertcount step 4 :" + insertsql);

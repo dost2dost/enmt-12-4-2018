@@ -395,7 +395,7 @@ public class ReadExcelFiles {
                String sqlAlterTbl = " Alter table _lte_data_temp\n" +
 
                        " Add Column  Status  varchar(10), Add Column  Step  varchar(10)," +
-                       " Add Column  Date  varchar(10)";
+                       " Add Column  Date  TimeStamp";
                statementAlterTbl.execute(sqlAlterTbl);
 
 
@@ -415,14 +415,19 @@ public class ReadExcelFiles {
        ArrayList<FinalTemplate> lstFinalTable= new ArrayList<FinalTemplate>();
         Connection Conn=Connections();
         String sql="";
+        String updatesql="";
+
 
         FinalTemplate obj;
 
 
         Statement statement  = Conn.createStatement();
+        Statement statementUpdate  = Conn.createStatement();
 
 
         sql =" select * from _lte_data_temp";
+
+      //  updatesql ="update _lte_data_temp set Date='"""
 
         ResultSet rs =statement.executeQuery(sql);
 

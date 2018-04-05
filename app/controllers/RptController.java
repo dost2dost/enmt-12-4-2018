@@ -358,11 +358,11 @@ public class RptController extends Controller {
 
 
 
-     /*   try {
+        try {
 
         for (int i=0;i<  lstFiles.size();i++) {
 
-            String  FILE_PATH = "C:\\Users\\Dost Muhammad\\Desktop\\"+dtf.format(now)+"\\"+lstFiles.get(i)+"";
+            String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\Conure Automation Tool\\"+dtf.format(now)+"\\"+lstFiles.get(i)+"";
             System.out.println("FILE_PATH "+FILE_PATH);
 
             String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
@@ -375,11 +375,13 @@ public class RptController extends Controller {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-*/
+
+        vobj.Step1();
+        vobj.Step2();
+        vobj.Step3();
+        vobj.Step4();
 
 
-
-  //   vobj.Step4();
 
 
 
