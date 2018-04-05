@@ -1,0 +1,50 @@
+@import models.ExcelSheets
+@(lst: List[models.ExcelSheets ])
+<htm>
+    <style type="text/css">
+            .containerDiv {
+                borderleft: 1px solid black;
+                borderbottom: 1px solid black;
+
+            }
+            .rowDiv {
+                bordertop: 1px solid black;
+            }
+            .cellDiv {
+                borderright: 1px solid black;
+
+
+                padding: 4px;
+            }
+    </style>
+
+    <table>
+        <colgroup>
+            <col span="2" style="backgroundcolor:red">
+            <col style="backgroundcolor:yellow">
+        </colgroup>
+        <tr>
+            <th>Filepath</th>
+            <th>SheetNo</th>
+
+        </tr>
+
+        @for(user <- lst) {
+            <tr>  <th>@user.getFilePath</th>
+                <th>@user.getSheetNo</th>
+            </tr>
+        }
+
+
+
+    </table>
+    var sdate;
+    Start Date: <input type="text"  id="sdate" name="fname" value=sdate><br>
+    End Date: <input type="text" name="lname" value="Doe"><br>
+
+    <form action="@routes.RptController.save()" method="POST">
+        java name: <input name="username"> <br />
+        java surname: <input name="password"> <br />
+        <input type="submit" value="save">
+    </form>
+</htm>
