@@ -427,9 +427,10 @@ public class ReadExcelFiles {
 
         sql =" select * from _lte_data_temp";
 
-      //  updatesql ="update _lte_data_temp set Date='"""
+       updatesql ="update _lte_data_temp set Date=now()";
 
         ResultSet rs =statement.executeQuery(sql);
+        int updatecount =statementUpdate.executeUpdate(updatesql);
 
         while (rs.next()) {
 
