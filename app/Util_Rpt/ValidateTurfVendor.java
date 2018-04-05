@@ -123,11 +123,7 @@ public class ValidateTurfVendor {
 
             ResultSet rstbl= statementTblCol.executeQuery(sql);
 
-            Statement statementAlterTbl = Conn.createStatement();
-            String sqlAlterTbl = " Alter table _lte_data_temp\n" +
 
-                                 " Add Column  Status  varchar(10)";
-            statementAlterTbl.execute(sqlAlterTbl);
 
 
             while (rstbl.next()) {

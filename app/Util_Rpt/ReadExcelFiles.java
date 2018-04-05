@@ -356,4 +356,53 @@ public class ReadExcelFiles {
         return (rad * 180 / Math.PI);
     }
 
+
+    public Boolean CreateTemplateTable() throws SQLException {
+        Connection Conn=Connections();
+        String sql="";
+        String insertsql="";
+        String tablename="";
+
+        Statement statementInsert = Conn.createStatement();
+        Statement statement  = Conn.createStatement();
+        Statement statementAdd=Conn.createStatement();
+
+        sql =" SELECT table_name\n" +
+                "   FROM   information_schema.tables \n" +
+                "   WHERE  table_schema = 'public'\n" +
+                "   AND    table_name = '_lte_data_temp'";
+
+        ResultSet rs =statement.executeQuery(sql);
+
+        if (rs.next()) {
+
+           tablename = rs.getString("table_name");
+
+           if(tablename=="")
+           {
+
+               insertsql="select * INTO _lte_data_temp  from \"_LTE_Vendor_Validation___1000_ro\"";
+
+               int insertcount =statementInsert.executeUpdate(insertsql);
+
+
+
+               Statement statementAlterTbl = Conn.createStatement();
+               String sqlAlterTbl = " Alter table _lte_data_temp\n" +
+
+                       " Add Column  Status  varchar(10), Add Column  Step  varchar(10)," +
+                       " Add Column  Date  varchar(10)";
+               statementAlterTbl.execute(sqlAlterTbl);
+
+           }
+
+        }
+
+
+
+
+        return true;
+    }
+
+
 }

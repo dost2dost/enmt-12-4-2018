@@ -29,6 +29,10 @@ import java.util.List;
 import java.util.Set;
 import play.data.DynamicForm;
 import play.data.Form;
+
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 /**
  * Created by Dost Muhammad on 3/13/2018.
  */
@@ -313,7 +317,7 @@ public class RptController extends Controller {
 
         lstRowNo.add(0);
         lstRowNo.add(2);
-        lstRowNo.add(0);
+        lstRowNo.add(1);
         lstRowNo.add(21);
         lstRowNo.add(0);
 
@@ -330,29 +334,35 @@ public class RptController extends Controller {
         }
 
 
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        LocalDateTime now = LocalDateTime.now();
 
 
 
 
 
-       /* try {
+        try {
 
         for (int i=0;i<  lstFiles.size();i++) {
 
-            String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\"+lstFiles.get(i)+"";
-
+            String  FILE_PATH = "C:\\Users\\Abbas Qamar\\Desktop\\Conure Automation Tool\\"+dtf.format(now)+"\\"+lstFiles.get(i)+"";
+            System.out.println("FILE_PATH "+FILE_PATH);
 
             String result = objexcel.ParseExcelSheets(FILE_PATH,lst.get(i).getSheetNo(), lst.get(i).getRowNo());
 
 
            }
+
+            Boolean isCreated= objexcel.CreateTemplateTable();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-*/
 
-     vobj.Step4();
+
+
+  //   vobj.Step4();
 
 
 
