@@ -356,7 +356,7 @@ public class RptController extends Controller {
 
 
 
-
+ 
 
         try {
 
@@ -376,10 +376,10 @@ public class RptController extends Controller {
             e.printStackTrace();
         }
 
-        vobj.Step1();
-        vobj.Step2();
-        vobj.Step3();
-        vobj.Step4();
+         vobj.Step1();
+         vobj.Step2();
+         vobj.Step3();
+          vobj.Step4();
 
 
 

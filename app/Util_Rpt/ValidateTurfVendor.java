@@ -5,6 +5,7 @@ import com.avaje.ebean.RawSql;
 import com.avaje.ebean.RawSqlBuilder;
 import entities.TV;
 import entities.TurfVendorEnmt;
+import models.FinalTemplate;
 
 import java.awt.print.Book;
 import java.sql.*;
@@ -283,80 +284,219 @@ public class ValidateTurfVendor {
 
         ReadExcelFiles obj=new ReadExcelFiles();
         Connection Conn=obj.Connections();
-
+        ArrayList<FinalTemplate> lstSiteMaster= new ArrayList<FinalTemplate>();
+        ArrayList<FinalTemplate> lstLteTemp= new ArrayList<FinalTemplate>();
         String updatesql="";
         String sql="";
-        double distance=0;
+        String sqldistinct="";
+        FinalTemplate objtemp;
+        FinalTemplate objtemp2;
+        String UsIdDistinct="";
 
-        sql="Select  \"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
-                " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
-                " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
-                "  \"Vendor Provided RBS Cable Type\" from \"_lte_data_temp\" ";
-// where  "USID"='51161'
+
+
         try {
-            Statement statement= Conn.createStatement();
+            Statement statement = Conn.createStatement();
             Statement statementLte = Conn.createStatement();
             Statement statementSiteMaster = Conn.createStatement();
             Statement statementInsert = Conn.createStatement();
+            Statement statementUpdate = Conn.createStatement();
+            Statement statementDistinct = Conn.createStatement();
+
+//where "USID"='51161'
+            sqldistinct="SELECT DISTINCT \"USID\" FROM _lte_data_temp ";
+            ResultSet rsdis = statementDistinct.executeQuery(sqldistinct);
+
+            while (rsdis.next()) {
+                UsIdDistinct= rsdis.getString("USID");
 
 
-            ResultSet rstbl= statement.executeQuery(sql);
-            sql="";
 
-            while (rstbl.next()) {
-                String Usid = rstbl.getString("USID");
-                String UseId = rstbl.getString("USEID");
 
-                String pacenumber = rstbl.getString("PACE Number");
-                String submitemail = rstbl.getString("Submitters E-mail");
-                String structtype = rstbl.getString("Structure Type");
-                String falocation = rstbl.getString("FA Location");
-                String rbsid = rstbl.getString("RBSID");
-                String sitestate = rstbl.getString("SITE_STATE");
-                String vplatd = rstbl.getString("Vendor Provided LATITUDE in Decimals");
-                String vplongd = rstbl.getString("Vendor Provided LONGITUDE in Decimals");
-                String vpgcl = rstbl.getString("Vendor Provided GPS Calble Length (Feet)");
-                String vpgct = rstbl.getString("Vendor Provided GPS Cable Type");
-                String vprcl = rstbl.getString("Vendor Provided RBS Cable Length (Feet)");
-                String vprct = rstbl.getString("Vendor Provided RBS Cable Type");
 
-                sql=" \n" +
+
+                sql="Select  \"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
+                        " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
+                        " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
+                        "  \"Vendor Provided RBS Cable Type\" from \"_lte_data_temp\" where  \"USID\"='"+UsIdDistinct+"' ";
+
+               ResultSet rstbl = statement.executeQuery(sql);
+
+
+
+
+
+                sql = "";
+
+                sql = " \n" +
                         "select \"USID\",\"Useid\" from \"SiteMaster_UseID_W_LOSANGELES\"\n" +
-                        "where  \"USID\"='"+Usid+"' and \"Useid\" !='"+UseId+"'";
+                        "where  \"USID\"='" + UsIdDistinct + "'";
 
-                         ResultSet rsmastertbl= statementSiteMaster.executeQuery(sql);
+                ResultSet rsmastertbl = statementSiteMaster.executeQuery(sql);
 
-                    while (rsmastertbl.next()) {
-                             String Usidm = rsmastertbl.getString("USID");
-                             String UseIdm = rsmastertbl.getString("USEID");
+                while (rsmastertbl.next()) {
 
-                        sql="select  \"USID\",\"USEID\" from \"_lte_data_temp\"\n" +
-                                "where \"USID\"='"+Usidm+"' and \"USEID\"='"+UseIdm+"'";
+                    objtemp = new FinalTemplate();
+                    objtemp.setUsId(rsmastertbl.getString("USID"));
+                    objtemp.setUseId(rsmastertbl.getString("Useid"));
+                    lstSiteMaster.add(objtemp);
+                }
 
-                      //  System.out.println("sql step 4 :" + sql);
+                while (rstbl.next()) {
 
-                        ResultSet rslte =statementLte.executeQuery(sql);
-                    sql="";
-                        if (!rslte.next()) {
-                            // if No result Found insert data in _lte_Vendor_Validation_1000_ro table
-                        String insertsql="\n" +
+                    objtemp = new FinalTemplate();
+                    objtemp.setUsId(rstbl.getString("USID"));
+                    objtemp.setUseId(rstbl.getString("Useid"));
+                    objtemp.setPaceNumber(rstbl.getString("PACE Number"));
+                    objtemp.setSubmittersEmail(rstbl.getString("Submitters E-mail"));
+                    objtemp.setStructureType(rstbl.getString("Structure Type"));
+                    objtemp.setFaLocation(rstbl.getString("FA Location"));
+                    objtemp.setRbsId(rstbl.getString("RBSID"));
+                    objtemp.setSiteState(rstbl.getString("SITE_STATE"));
+                    objtemp.setVplatd(rstbl.getString("Vendor Provided LATITUDE in Decimals"));
+                    objtemp.setVplongd(rstbl.getString("Vendor Provided LONGITUDE in Decimals"));
+                    objtemp.setVpgcl(rstbl.getString("Vendor Provided GPS Calble Length (Feet)"));
+                    objtemp.setVpgct(rstbl.getString("Vendor Provided GPS Cable Type"));
+                    objtemp.setVprcl(rstbl.getString("Vendor Provided RBS Cable Length (Feet)"));
+                    objtemp.setVprct(rstbl.getString("Vendor Provided RBS Cable Type"));
+
+                    lstLteTemp.add(objtemp);
+
+                }
+
+
+
+
+
+                  ResultSet rslte =statementLte.executeQuery(sql);
+
+
+
+
+
+
+
+
+                for(int i=0 ; i <lstSiteMaster.size();i++) {
+                    String usid = lstSiteMaster.get(i).getUsId();
+                    String useid = lstSiteMaster.get(i).getUseId();
+
+                    for (int j = 0; j < lstLteTemp.size(); j++)
+                    {
+                        String usidl = lstLteTemp.get(j).getUsId();
+                        String useidl = lstLteTemp.get(j).getUseId();
+
+                        if(useid.equals(usidl) && useid.equals(useidl))
+                        {
+                            updatesql = "update _lte_data_temp set status='Pass'" +
+                                    "where \"USID\"='" + usid + "' and \"USEID\"='" + useid + "'";
+
+                            int updatecount = statementUpdate.executeUpdate(updatesql);
+
+                        }
+                        else
+                        {
+                            String Usid = lstLteTemp.get(j).getUsId();
+                            String UseId = lstLteTemp.get(j).getUseId();
+                            String pacenumber =lstLteTemp.get(j).getPaceNumber();
+                            String submitemail =lstLteTemp.get(j).getSubmittersEmail();
+                            String structtype = lstLteTemp.get(j).getStructureType();
+                            String falocation = lstLteTemp.get(j).getFaLocation();
+                            String rbsid =lstLteTemp.get(j).getRbsId();
+                            String sitestate =lstLteTemp.get(j).getSiteState();
+                            String vplatd = lstLteTemp.get(j).getVplatd();
+                            String vplongd = lstLteTemp.get(j).getVplongd();
+                            String vpgcl = lstLteTemp.get(j).getVpgcl();
+                            String vpgct =lstLteTemp.get(j).getVpgct();
+                            String vprcl = lstLteTemp.get(j).getVprcl();
+                            String vprct = lstLteTemp.get(j).getVprct();
+
+
+                            String insertsql = "\n" +
+                                    "insert into \"_lte_data_temp\" (\"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
+                                    " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
+                                    " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
+                                    "  \"Vendor Provided RBS Cable Type\",\"step\",\"status\")\n" +
+                                    "  \n" +
+                                    "  values ('" + pacenumber + "','" + submitemail + "','" + structtype + "','" + falocation + "'" +
+                                    " ,'" + rbsid + "','" + UsIdDistinct + "','" + sitestate + "','" + UseId + "','" + vplatd + "','" + vplongd + "'" +
+                                    "  ,'" + vpgcl + "','" + vpgct + "','" + vprcl + "','" + vprct + "','Step 4','Fail')";
+
+                            int insertcount = statementInsert.executeUpdate(insertsql);
+                            System.out.println("insertcount step 4 :" + insertsql);
+
+                        }
+                    }
+
+
+
+
+                  /*  if (!rslte.next()) {
+                        // if No result Found insert data in _lte_Vendor_Validation_1000_ro table
+                        String insertsql = "\n" +
                                 "insert into \"_lte_data_temp\" (\"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
                                 " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
                                 " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
-                                "  \"Vendor Provided RBS Cable Type\",\"Step\",\"Status\")\n" +
+                                "  \"Vendor Provided RBS Cable Type\",\"step\",\"status\")\n" +
                                 "  \n" +
-                                "  values ('"+pacenumber+"','"+submitemail+"','"+structtype+"','"+falocation+"'" +
-                                " ,'"+rbsid+"','"+Usid+"','"+sitestate+"','"+UseIdm+"','"+vplatd+"','"+vplongd+"'" +
-                                "  ,'"+vpgcl+"','"+vpgct+"','"+vprcl+"','"+vprct+"','Step 4','Fail')";
+                                "  values ('" + pacenumber + "','" + submitemail + "','" + structtype + "','" + falocation + "'" +
+                                " ,'" + rbsid + "','" + UsIdDistinct + "','" + sitestate + "','" + UseId + "','" + vplatd + "','" + vplongd + "'" +
+                                "  ,'" + vpgcl + "','" + vpgct + "','" + vprcl + "','" + vprct + "','Step 4','Fail')";
 
-                            int insertcount =statementInsert.executeUpdate(insertsql);
-                            System.out.println("insertcount step 4 :" + insertsql);
-                        }
+                        int insertcount = statementInsert.executeUpdate(insertsql);
+                        System.out.println("insertcount step 4 :" + insertsql);
+
+                    } else {
+
+                        updatesql = "update _lte_data_temp set status='Pass'" +
+                                "where \"USID\"='" + usid + "' and \"USEID\"='" + useid + "'";
+
+                        int updatecount = statementUpdate.executeUpdate(updatesql);
 
 
-                    }
+                    }*/
+                }
 
-            }
+
+                sql = "";
+           /*     if (!rslte.next()) {
+                    // if No result Found insert data in _lte_Vendor_Validation_1000_ro table
+                    String insertsql = "\n" +
+                            "insert into \"_lte_data_temp\" (\"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
+                            " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
+                            " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
+                            "  \"Vendor Provided RBS Cable Type\",\"step\",\"status\")\n" +
+                            "  \n" +
+                            "  values ('" + pacenumber + "','" + submitemail + "','" + structtype + "','" + falocation + "'" +
+                            " ,'" + rbsid + "','" + Usidm + "','" + sitestate + "','" + UseIdm + "','" + vplatd + "','" + vplongd + "'" +
+                            "  ,'" + vpgcl + "','" + vpgct + "','" + vprcl + "','" + vprct + "','Step 4','Fail')";
+
+                    int insertcount = statementInsert.executeUpdate(insertsql);
+                    System.out.println("insertcount step 4 :" + insertsql);
+
+                } else {
+
+                    updatesql = "update _lte_data_temp set status='Pass'" +
+                            "where \"USID\"='" + Usidm + "' and \"USEID\"='" + UseIdm + "'";
+
+                    int updatecount = statementUpdate.executeUpdate(updatesql);
+
+
+                }*/
+
+
+
+                System.out.println("List Count   :" + lstSiteMaster.size());
+
+        }
+        //    statementUpdate.close();
+         //   statementInsert.close();
+         //   statementSiteMaster.close();
+         //   statementLte.close();
+           // statement.close();
+
+            System.out.println("SAB BAND");
+            Conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

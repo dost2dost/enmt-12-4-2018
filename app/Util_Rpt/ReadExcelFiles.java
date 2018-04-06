@@ -394,7 +394,7 @@ public class ReadExcelFiles {
                Statement statementAlterTbl = Conn.createStatement();
                String sqlAlterTbl = " Alter table _lte_data_temp\n" +
 
-                       " Add Column  Status  varchar(10), Add Column  Step  varchar(10)," +
+                       " Add Column  Status  varchar(100), Add Column  Step  varchar(100)," +
                        " Add Column  Date  TimeStamp";
                statementAlterTbl.execute(sqlAlterTbl);
 
@@ -461,7 +461,7 @@ public class ReadExcelFiles {
             obj.setDate(rs.getDate("Date"));
 
 
-            System.out.println("1");
+
 
             lstFinalTable.add(obj);
 
