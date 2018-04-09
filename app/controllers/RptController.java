@@ -355,6 +355,9 @@ public class RptController extends Controller {
             objtemp.setVpgct(rstbl.getString("Vendor Provided GPS Cable Type"));
             objtemp.setVprcl(rstbl.getString("Vendor Provided RBS Cable Length (Feet)"));
             objtemp.setVprct(rstbl.getString("Vendor Provided RBS Cable Type"));
+            objtemp.setStatus(rstbl.getString("status"));
+            objtemp.setStep(rstbl.getString("step"));
+            objtemp.setDate(rstbl.getDate("date"));
 
             lstFinalTemp.add(objtemp);
 
@@ -445,10 +448,12 @@ public class RptController extends Controller {
         workbook.close();
         System.out.println("workbook" );
 
-
+        response().setContentType("application/x-download");
+        response().setHeader("Content-disposition","attachment; filename="+filename+"");
+        return ok(new File(filename));
 
       //  return  ok(views.html.RecordSAved.render());
-       return ok(filename +"Exported");
+
     }
 
 
@@ -501,7 +506,7 @@ public class RptController extends Controller {
 
 
 
-
+/*
 
         try {
 
@@ -526,7 +531,7 @@ public class RptController extends Controller {
        //  vobj.Step3();
            vobj.Step4();
 
- 
+*/
 
 
 
