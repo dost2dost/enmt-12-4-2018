@@ -33,15 +33,24 @@
     </head>
     <body>
 
+        <form action="@routes.RptController.save()" method="POST">
+            <div>
+                Start Date: <input id="startDate" name="username" type="date" data-date-format="DD MMMM YYYY " style="height: 30px">
+                End Date: <input id="endDate" name="password" type="date" data-date-format="DD MMMM YYYY " style="height: 30px"> <input type="submit" value="Submit"  style="color:white;  background-color: #044680;">
 
-            <form action="@routes.RptController.save()" method="POST">
-                <div>
-                    Start Date: <input name="username" >
-                    End Date: <input name="password"> <input type="submit" value="Submit">
+            </div>
 
-                </div>
 
-            </form>
+        </form>
+
+        <form action="@routes.RptController.export()" method="POST">
+            <div>
+
+                 <input type="submit" value="Export" style="color:white;  background-color: #044680;">
+
+            </div>
+
+        </form>
 
 
 

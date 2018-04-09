@@ -303,14 +303,16 @@ public class ValidateTurfVendor {
             Statement statementUpdate = Conn.createStatement();
             Statement statementDistinct = Conn.createStatement();
 
-//where "USID"='51161'
-            sqldistinct="SELECT DISTINCT \"USID\" FROM _lte_data_temp ";
+// where "USID"='51161'
+            sqldistinct="SELECT DISTINCT \"USID\" FROM _lte_data_temp";
             ResultSet rsdis = statementDistinct.executeQuery(sqldistinct);
 
             while (rsdis.next()) {
                 UsIdDistinct= rsdis.getString("USID");
 
 
+                lstSiteMaster= new ArrayList<FinalTemplate>();
+                lstLteTemp= new ArrayList<FinalTemplate>();
 
 
 
@@ -381,52 +383,25 @@ public class ValidateTurfVendor {
                     String usid = lstSiteMaster.get(i).getUsId();
                     String useid = lstSiteMaster.get(i).getUseId();
 
-                    for (int j = 0; j < lstLteTemp.size(); j++)
-                    {
-                        String usidl = lstLteTemp.get(j).getUsId();
-                        String useidl = lstLteTemp.get(j).getUseId();
 
-                        if(useid.equals(usidl) && useid.equals(useidl))
+                    for (int j = 0; j <lstLteTemp.size(); j++)
+                    {
+                        String usidl = lstLteTemp.get(j).getUsId().trim();
+                        String useidl = lstLteTemp.get(j).getUseId().trim();
+
+
+
+                        if(usid.trim().equals(usidl)&& useid.trim().equals(useidl))
                         {
                             updatesql = "update _lte_data_temp set status='Pass'" +
                                     "where \"USID\"='" + usid + "' and \"USEID\"='" + useid + "'";
 
                             int updatecount = statementUpdate.executeUpdate(updatesql);
-
+                            System.out.println("updatesql step 4 :" + updatesql);
                         }
-                        else
-                        {
-                            String Usid = lstLteTemp.get(j).getUsId();
-                            String UseId = lstLteTemp.get(j).getUseId();
-                            String pacenumber =lstLteTemp.get(j).getPaceNumber();
-                            String submitemail =lstLteTemp.get(j).getSubmittersEmail();
-                            String structtype = lstLteTemp.get(j).getStructureType();
-                            String falocation = lstLteTemp.get(j).getFaLocation();
-                            String rbsid =lstLteTemp.get(j).getRbsId();
-                            String sitestate =lstLteTemp.get(j).getSiteState();
-                            String vplatd = lstLteTemp.get(j).getVplatd();
-                            String vplongd = lstLteTemp.get(j).getVplongd();
-                            String vpgcl = lstLteTemp.get(j).getVpgcl();
-                            String vpgct =lstLteTemp.get(j).getVpgct();
-                            String vprcl = lstLteTemp.get(j).getVprcl();
-                            String vprct = lstLteTemp.get(j).getVprct();
 
-
-                            String insertsql = "\n" +
-                                    "insert into \"_lte_data_temp\" (\"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
-                                    " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
-                                    " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
-                                    "  \"Vendor Provided RBS Cable Type\",\"step\",\"status\")\n" +
-                                    "  \n" +
-                                    "  values ('" + pacenumber + "','" + submitemail + "','" + structtype + "','" + falocation + "'" +
-                                    " ,'" + rbsid + "','" + UsIdDistinct + "','" + sitestate + "','" + UseId + "','" + vplatd + "','" + vplongd + "'" +
-                                    "  ,'" + vpgcl + "','" + vpgct + "','" + vprcl + "','" + vprct + "','Step 4','Fail')";
-
-                            int insertcount = statementInsert.executeUpdate(insertsql);
-                            System.out.println("insertcount step 4 :" + insertsql);
-
-                        }
                     }
+
 
 
 
@@ -455,6 +430,61 @@ public class ValidateTurfVendor {
 
 
                     }*/
+                }
+
+
+
+                for(int i=0 ; i <lstSiteMaster.size();i++) {
+                    String usid = lstSiteMaster.get(i).getUsId();
+                    String useid = lstSiteMaster.get(i).getUseId();
+
+                    Boolean isExist=false;
+
+                    int count=0;
+                    for (int j = 0; j <lstLteTemp.size(); j++) {
+                        String usidl = lstLteTemp.get(j).getUsId().trim();
+                        String useidl = lstLteTemp.get(j).getUseId().trim();
+
+                        if( usid.trim().equals(usidl)&&  useid.trim().equals(useidl)) {
+                            isExist=true;
+                        }
+                        else
+                        {
+                            count=j;
+                        }
+
+                    }
+                    if(!isExist)
+                    {
+                        String Usid = lstLteTemp.get(count).getUsId();
+                        String UseId = lstLteTemp.get(count).getUseId();
+                        String pacenumber =lstLteTemp.get(count).getPaceNumber();
+                        String submitemail =lstLteTemp.get(count).getSubmittersEmail();
+                        String structtype = lstLteTemp.get(count).getStructureType();
+                        String falocation = lstLteTemp.get(count).getFaLocation();
+                        String rbsid =lstLteTemp.get(count).getRbsId();
+                        String sitestate =lstLteTemp.get(count).getSiteState();
+                        String vplatd = lstLteTemp.get(count).getVplatd();
+                        String vplongd = lstLteTemp.get(count).getVplongd();
+                        String vpgcl = lstLteTemp.get(count).getVpgcl();
+                        String vpgct =lstLteTemp.get(count).getVpgct();
+                        String vprcl = lstLteTemp.get(count).getVprcl();
+                        String vprct = lstLteTemp.get(count).getVprct();
+
+
+                        String insertsql = "\n" +
+                                "insert into \"_lte_data_temp\" (\"PACE Number\",\"Submitters E-mail\",\"Structure Type\",\"FA Location\",\n" +
+                                " \"RBSID\",\"USID\",\"SITE_STATE\",\"USEID\",\"Vendor Provided LATITUDE in Decimals\",\"Vendor Provided LONGITUDE in Decimals\",\n" +
+                                " \"Vendor Provided GPS Calble Length (Feet)\",\"Vendor Provided GPS Cable Type\",\"Vendor Provided RBS Cable Length (Feet)\",\n" +
+                                "  \"Vendor Provided RBS Cable Type\",\"step\",\"status\")\n" +
+                                "  \n" +
+                                "  values ('" + pacenumber + "','" + submitemail + "','" + structtype + "','" + falocation + "'" +
+                                " ,'" + rbsid + "','" + Usid + "','" + sitestate + "','" + UseId + "','" + vplatd + "','" + vplongd + "'" +
+                                "  ,'" + vpgcl + "','" + vpgct + "','" + vprcl + "','" + vprct + "','Step 4','Fail')";
+
+                        int insertcount = statementInsert.executeUpdate(insertsql);
+                    }
+
                 }
 
 

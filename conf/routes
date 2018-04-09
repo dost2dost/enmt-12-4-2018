@@ -6,6 +6,8 @@
 #GET     /                           controllers.HomeController.index()
 GET     /                         controllers.RptController.index1()
 POST     /submit                     controllers.RptController.save()
+
+POST     /export                     controllers.RptController.export()
 #GET     /viewFreport                        controllers.RptController.indexfnal()
 #POST     /viewFreport                       controllers.RptController.indexfnal()
 GET     /tv                         controllers.RptController.saveTurfVendor()

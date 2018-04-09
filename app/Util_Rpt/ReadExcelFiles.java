@@ -16,6 +16,7 @@ import java.sql.*;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -178,8 +179,8 @@ public class ReadExcelFiles {
 
             System.out.println(" InsertSql :" + InsertSql);
 
-            nRow=  nRow+1;
-            for (int i = nRow+1; i <= maxDataRow; i++) {
+
+            for (int i = nRow; i <= maxDataRow; i++) {
                 int row = i;
 
                 for (int j = 0; j <= maxDataColumn; j++) {
@@ -482,6 +483,7 @@ public class ReadExcelFiles {
     public  ArrayList<FinalTemplate> GetDateFromFinalTemplateByDate(String startDate,String endDate) throws SQLException {
 
         ArrayList<FinalTemplate> lstFinalTable= new ArrayList<FinalTemplate>();
+        SimpleDateFormat dateFormat=new SimpleDateFormat("dd/MMM/yyyy hh:mm:ss");
         Connection Conn=Connections();
         String sql="";
 
@@ -494,6 +496,7 @@ public class ReadExcelFiles {
         sql ="select *\n" +
                 "FROM public.\"_lte_data_temp\"\n" +
                 "where date between '"+startDate+"' and '"+endDate+"'";
+
 
         ResultSet rs =statement.executeQuery(sql);
 
@@ -535,7 +538,6 @@ public class ReadExcelFiles {
 
 
     }
-
 
 
 }

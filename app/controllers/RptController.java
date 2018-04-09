@@ -24,7 +24,12 @@ import play.mvc.Result;
 import play.twirl.api.Content;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,8 +37,20 @@ import java.util.Set;
 import play.data.DynamicForm;
 import play.data.Form;
 
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by Dost Muhammad on 3/13/2018.
@@ -297,7 +314,7 @@ public class RptController extends Controller {
         if(startDate.equalsIgnoreCase("") && endDate.equalsIgnoreCase("")){
             lstfinal= objexcel.GetDataFromFinalTemplate();
         }else{
-             lstfinal= objexcel.GetDateFromFinalTemplateByDate(startDate,endDate);
+            lstfinal= objexcel.GetDateFromFinalTemplateByDate(startDate,endDate);
         }
 
 
@@ -306,6 +323,134 @@ public class RptController extends Controller {
 
 
     }
+
+    private static String[] columns = {"PACE Number\n", "Submitters E-mail\n", "Structure Type\n", "FA Location\n","RBSID\n","USID\n","SITE_STATE\n","USEID\n","Vendor Provided LATITUDE in Decimals\n","Vendor Provided LONGITUDE in Decimals\n",
+                                    "Vendor Provided GPS Calble Length (Feet)\n","Vendor Provided GPS Cable Type\n","Vendor Provided RBS Cable Length (Feet)\n","Vendor Provided RBS Cable Type\n","Status","Step","Date"};
+    public  Result export() throws SQLException, IOException {
+
+        ArrayList<FinalTemplate> lstFinalTemp = new ArrayList<FinalTemplate>();
+        ReadExcelFiles obj=new ReadExcelFiles();
+        Connection Conn=obj.Connections();
+
+        Statement statement = Conn.createStatement();
+        String sql="";
+        sql = "select * from _lte_data_temp";
+
+        ResultSet rstbl = statement.executeQuery(sql);
+
+        while (rstbl.next()) {
+
+            FinalTemplate objtemp = new FinalTemplate();
+            objtemp.setUsId(rstbl.getString("USID"));
+            objtemp.setUseId(rstbl.getString("Useid"));
+            objtemp.setPaceNumber(rstbl.getString("PACE Number"));
+            objtemp.setSubmittersEmail(rstbl.getString("Submitters E-mail"));
+            objtemp.setStructureType(rstbl.getString("Structure Type"));
+            objtemp.setFaLocation(rstbl.getString("FA Location"));
+            objtemp.setRbsId(rstbl.getString("RBSID"));
+            objtemp.setSiteState(rstbl.getString("SITE_STATE"));
+            objtemp.setVplatd(rstbl.getString("Vendor Provided LATITUDE in Decimals"));
+            objtemp.setVplongd(rstbl.getString("Vendor Provided LONGITUDE in Decimals"));
+            objtemp.setVpgcl(rstbl.getString("Vendor Provided GPS Calble Length (Feet)"));
+            objtemp.setVpgct(rstbl.getString("Vendor Provided GPS Cable Type"));
+            objtemp.setVprcl(rstbl.getString("Vendor Provided RBS Cable Length (Feet)"));
+            objtemp.setVprct(rstbl.getString("Vendor Provided RBS Cable Type"));
+
+            lstFinalTemp.add(objtemp);
+
+        }
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        CreationHelper createHelper = workbook.getCreationHelper();
+
+        // Create a Sheet
+        Sheet sheet = workbook.createSheet("Employee");
+
+
+        Row headerRow = sheet.createRow(0);
+
+        // Creating cells
+        for(int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+
+        }
+
+        int rowNum = 1;
+        for(FinalTemplate finaltemp: lstFinalTemp) {
+            Row row = sheet.createRow(rowNum++);
+
+            row.createCell(0)
+                    .setCellValue(finaltemp.getPaceNumber());
+
+            row.createCell(1)
+                    .setCellValue(finaltemp.getSubmittersEmail());
+
+            row.createCell(2)
+                    .setCellValue(finaltemp.getStructureType());
+
+            row.createCell(3)
+                    .setCellValue(finaltemp.getFaLocation());
+
+            row.createCell(4)
+                    .setCellValue(finaltemp.getRbsId());
+            row.createCell(5)
+                    .setCellValue(finaltemp.getUsId());
+
+            row.createCell(6)
+                    .setCellValue(finaltemp.getSiteState());
+
+            row.createCell(7)
+                    .setCellValue(finaltemp.getUseId());
+
+            row.createCell(8)
+                    .setCellValue(finaltemp.getVplatd());
+
+            row.createCell(9)
+                    .setCellValue(finaltemp.getVplongd());
+
+            row.createCell(10)
+                    .setCellValue(finaltemp.getVpgcl());
+
+            row.createCell(11)
+                    .setCellValue(finaltemp.getVpgct());
+
+            row.createCell(12)
+                    .setCellValue(finaltemp.getVprcl());
+
+            row.createCell(13)
+                    .setCellValue(finaltemp.getVprct());
+
+            row.createCell(14)
+                    .setCellValue(finaltemp.getStatus());
+
+            row.createCell(15)
+                    .setCellValue(finaltemp.getStep());
+
+            row.createCell(16)
+                    .setCellValue(finaltemp.getDate());
+
+
+        }
+
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMddyyyy HH_mm_ss");
+        LocalDateTime now = LocalDateTime.now();
+        String filename="Export_"+dtf.format(now)+".xlsx";
+
+        FileOutputStream fileOut = new FileOutputStream(filename);
+        workbook.write(fileOut);
+        fileOut.close();
+
+        workbook.close();
+        System.out.println("workbook" );
+
+
+
+      //  return  ok(views.html.RecordSAved.render());
+       return ok("ok");
+    }
+
 
 
     // initial Start Page Load
@@ -356,7 +501,7 @@ public class RptController extends Controller {
 
 
 
- 
+
 
         try {
 
@@ -376,12 +521,12 @@ public class RptController extends Controller {
             e.printStackTrace();
         }
 
-         vobj.Step1();
-         vobj.Step2();
-         vobj.Step3();
-          vobj.Step4();
+        // vobj.Step1();
+        // vobj.Step2();
+       //  vobj.Step3();
+           vobj.Step4();
 
-
+ 
 
 
 
