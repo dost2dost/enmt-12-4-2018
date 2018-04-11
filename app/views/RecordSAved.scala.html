@@ -33,27 +33,24 @@
     </head>
     <body>
 
-        <form action="@routes.RptController.save()" method="POST" style="float: left;
-            ">
-            <div>
+        <form action="@routes.RptController.save()" method="POST" style="    float: left;
+            margin-right: 5px; margin-left: 20px;">
+
                 Start Date: <input id="startDate" name="username" type="date" data-date-format="DD MMMM YYYY " style="height: 30px">
-                End Date: <input id="endDate" name="password" type="date" data-date-format="DD MMMM YYYY " style="height: 30px"> <input type="submit" value="Submit"  style="color:white;  background-color: #044680;">
+                End Date: <input id="endDate" name="password" type="date" data-date-format="DD MMMM YYYY " style="height: 30px">
+                    <input type="submit" value="Submit"  style="color:white;  background-color: #044680; padding: 10px;">
 
-            </div>
-
-
-        </form>
-
-        <form action="@routes.RptController.export()" method="POST" style="float: right;
-            ">
-            <div>
-
-                 <input type="submit" value="Export" style="color:white;  background-color: #044680;">
-
-            </div>
 
         </form>
 
+        <form action="@routes.RptController.export()" method="POST"  >
+
+
+                 <input type="submit" value="Export" style="color:white;  background-color: #044680; padding: 10px;">
+
+
+        </form>
+  
 
 
         <table id="customers">

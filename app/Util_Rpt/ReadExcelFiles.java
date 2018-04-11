@@ -180,7 +180,7 @@ public class ReadExcelFiles {
             System.out.println(" InsertSql :" + InsertSql);
 
 
-            for (int i = nRow; i <= maxDataRow; i++) {
+            for (int i = ++nRow; i <= maxDataRow; i++) {
                 int row = i;
 
                 for (int j = 0; j <= maxDataColumn; j++) {

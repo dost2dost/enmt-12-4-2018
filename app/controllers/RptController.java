@@ -326,6 +326,8 @@ public class RptController extends Controller {
 
     private static String[] columns = {"PACE Number\n", "Submitters E-mail\n", "Structure Type\n", "FA Location\n","RBSID\n","USID\n","SITE_STATE\n","USEID\n","Vendor Provided LATITUDE in Decimals\n","Vendor Provided LONGITUDE in Decimals\n",
                                     "Vendor Provided GPS Calble Length (Feet)\n","Vendor Provided GPS Cable Type\n","Vendor Provided RBS Cable Length (Feet)\n","Vendor Provided RBS Cable Type\n","Status","Step","Date"};
+
+
     public  Result export() throws SQLException, IOException {
 
         ArrayList<FinalTemplate> lstFinalTemp = new ArrayList<FinalTemplate>();
@@ -367,8 +369,19 @@ public class RptController extends Controller {
         CreationHelper createHelper = workbook.getCreationHelper();
 
         // Create a Sheet
-        Sheet sheet = workbook.createSheet("Employee");
+        Sheet sheet = workbook.createSheet("ENMT");
 
+        // Create a Font for styling header cells
+        Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 13);
+        headerFont.setColor(IndexedColors.BLACK .getIndex());
+
+        // Create a CellStyle with the font
+        CellStyle headerCellStyle = workbook.createCellStyle();
+        headerCellStyle.setFont(headerFont);
+
+        // Create a Row
 
         Row headerRow = sheet.createRow(0);
 
@@ -376,6 +389,7 @@ public class RptController extends Controller {
         for(int i = 0; i < columns.length; i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(columns[i]);
+            cell.setCellStyle(headerCellStyle);
 
         }
 
@@ -431,7 +445,7 @@ public class RptController extends Controller {
                     .setCellValue(finaltemp.getStep());
 
             row.createCell(16)
-                    .setCellValue(finaltemp.getDate());
+                    .setCellValue(finaltemp.getDate().toString());
 
 
         }
@@ -503,7 +517,6 @@ public class RptController extends Controller {
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MMddyyyy");
         LocalDateTime now = LocalDateTime.now();
-
 
 
 
