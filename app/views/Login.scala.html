@@ -1,0 +1,32 @@
+@(frmUser:Form[UserDetails])
+@import helper._
+
+@main{
+            @helper.form(routes.LoginController.autheticate()){
+                <h1>ENMT REPORT AUTOMATION</h1>
+
+                <div class="container ">
+
+                    @helper.inputText(frmUser("user"))
+
+                    @helper.inputText(frmUser("email"))
+
+                    @helper.inputText(frmUser("password"))
+                    <button type="submit" value="Login">Login</button>
+
+            </div>
+
+
+
+
+
+
+
+
+            }
+
+
+
+
+
+}

@@ -4,8 +4,11 @@
 
 # Default path will just redirect to the computer list
 #GET     /                           controllers.HomeController.index()
-GET     /                         controllers.RptController.index1()
+#GET     /                         controllers.RptController.index1()
 POST     /submit                     controllers.RptController.save()
+GET     /                       controllers.LoginController.login()
+#GET     /logout                      controllers.LoginController.logout()
+POST     /login                        controllers.LoginController.autheticate()
 
 POST     /export                     controllers.RptController.export()
 #GET     /viewFreport                        controllers.RptController.indexfnal()
