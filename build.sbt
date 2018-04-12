@@ -16,6 +16,8 @@ libraryDependencies += "com.adrianhurt" %% "play-bootstrap" % "1.0-P25-B3"
 libraryDependencies += "com.aspose" % "aspose-cells" % "18.2"
 
 
+
+
 // https://mvnrepository.com/artifact/com.ebay/xcelite
 libraryDependencies += "com.ebay" % "xcelite" % "1.0.4"
 

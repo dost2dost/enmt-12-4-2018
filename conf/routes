@@ -9,6 +9,7 @@ POST     /submit                     controllers.RptController.save()
 GET     /                       controllers.LoginController.login()
 #GET     /logout                      controllers.LoginController.logout()
 POST     /login                        controllers.LoginController.autheticate()
+POST     /signout                        controllers.LoginController.signOut()
 
 POST     /export                     controllers.RptController.export()
 #GET     /viewFreport                        controllers.RptController.indexfnal()

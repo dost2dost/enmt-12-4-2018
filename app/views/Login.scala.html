@@ -2,8 +2,25 @@
 @import helper._
 
 @main{
+
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1>ENMT REPORT AUTOMATION</h1>
+
+        </div>
+        <div class="row" style="margin-left: 400px">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+
+            </div>
+        </div>
+
+    </div>
             @helper.form(routes.LoginController.autheticate()){
-                <h1>ENMT REPORT AUTOMATION</h1>
+
+
 
                 <div class="container ">
 
@@ -12,9 +29,15 @@
                     @helper.inputText(frmUser("email"))
 
                     @helper.inputText(frmUser("password"))
-                    <button type="submit" value="Login">Login</button>
+                    <div>
+                        <button type="submit" value="Login" style="margin-left: 300px">Login</button>
+                    </div>
+
+
 
             </div>
+
+
 
 
 

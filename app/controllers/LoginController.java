@@ -71,6 +71,10 @@ private static Form<UserDetails> frmUser;
 
 
     }
+    public Result signOut(){
+        session().clear();
+        return  ok(Login.render(frmUser));
+    }
     public Result login(){
        // final Form<UserDetails> boundForm = frmUser.bindFromRequest();
         //UserDetails usdetail=boundForm.get();
